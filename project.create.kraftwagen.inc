@@ -30,7 +30,7 @@ function drush_kraftwagen_create_project($dir = null) {
   
   // ask for the location of the git repository that contains the skeleton.
   $skeleton = drush_prompt(dt('Enter the location of the skeleton repository'));
-  $branch = drush_prompt(dt('Enther the name of the branch to use [source repository HEAD]'), NULL, FALSE);
+  $branch = drush_prompt(dt('Enter the name of the branch to use [source repository HEAD]'), NULL, FALSE);
 
   // create a tempdir where we are going to clone the repository in
   $tempdir = drush_tempdir();
