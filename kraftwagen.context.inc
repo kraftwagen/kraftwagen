@@ -241,7 +241,7 @@ function kraftwagen_context_load_config_file_temp($config) {
 
 function kraftwagen_context_confirm($option, $msg, $indent = 0) {
   // use default value for option
-  $value = lenkrad_context_get_option('default-' . $option);
+  $value = kraftwagen_context_get_option('default-' . $option);
   if (!is_null($value)) {
     return (bool) $value;
   }

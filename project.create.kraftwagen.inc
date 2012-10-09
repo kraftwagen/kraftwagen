@@ -51,7 +51,7 @@ function drush_kraftwagen_create_project($dir = null) {
     // actual source of the project.
     drush_mkdir($dir . DIRECTORY_SEPARATOR . $dir_src);
     
-    kraftwagen_copy_dir($tempdir, $dir . DIRECTORY_SEPARATOR . $dir_src, 
+    _kraftwagen_copy_dir($tempdir, $dir . DIRECTORY_SEPARATOR . $dir_src, 
       array('SKELETON' => $project_name),
       array(
         '***MACHINE_NAME***' => $project_name, 
