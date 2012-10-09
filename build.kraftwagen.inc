@@ -3,7 +3,7 @@
 /**
  * @file
  * This file contains the functions that are required to execute 
- * kraftwagen-build.
+ * `kraftwagen-build`.
  */
 
 /**
@@ -273,6 +273,20 @@ function kraftwagen_build_create_build($make_file, $target_dir) {
   return $build_dir;
 }
 
+/**
+ * Remove and optionally archive an existing build target.
+ *
+ * It will check if the target exists, and if it does, it tries to archive it 
+ * and removes it.
+ * 
+ * @param $root
+ *   Kraftwagen root path
+ * @param $target_dir
+ *   The, maybe existing target dir
+ *
+ * @return 
+ *   TRUE on success, FALSE on failure
+ */
 function kraftwagen_build_manage_existing_target($root, $target_dir) {
   // jump out if we do not have an existing target
   if (!is_dir($target_dir)) {
@@ -310,6 +324,19 @@ function kraftwagen_build_manage_existing_target($root, $target_dir) {
   return true;
 }
 
+/**
+ * Manage an, optionally existing symlink to the build target and create a new
+ * one.
+ *
+ * Find out where the symlink should be created. If it exists, ask for 
+ * permission to remove it. If it does not exist or with permission, create a
+ * new symlink to the build target.
+ *
+ * @param $root
+ *   Kraftwagen root path
+ * @param $target
+ *   The build target path
+ */
 function kraftwagen_build_manage_symlink($root, $target_dir) {
   $dir_build = kraftwagen_context_get_option('build-dir');
 

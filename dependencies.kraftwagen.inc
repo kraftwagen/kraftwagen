@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file contains the functions that are required to execute
+ * `kraftwagen-dependencies`.
+ */
+
 function drush_kraftwagen_dependencies() {
   // enable watchdog printing to show information about enabled, disabled, 
   // installed and uninstalled modules

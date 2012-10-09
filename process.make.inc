@@ -1,6 +1,12 @@
 <?php
 
 /**
+ * @file
+ * This file provides an extension to the `make-process` command, a subcommand 
+ * of `make`. 
+ */
+
+/**
  * Implements make_download_DOWNLOAD_TYPE() for 'kraftwagen_directory'. 
  * This allows building directly from the filesystem, instead of from a 
  * repository.
