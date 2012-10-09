@@ -18,6 +18,12 @@ function kraftwagen_drush_command() {
     ),
   );
 
+  $items['kraftwagen-build'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Create a build from the source'),
+    'aliases' => array('kw-b'),
+  );
+
   $items['kraftwagen-make-update'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Update an existing makefile to the newest version of contributed modules. This will NOT do any major updates.'),
