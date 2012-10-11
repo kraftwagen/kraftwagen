@@ -36,7 +36,7 @@ function kraftwagen_drush_command() {
 
   $items['kraftwagen-dependencies'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
-    'description' => 'Check if all required modules are enabled, enable them if they are not, and disable them if the are enabled, but not required.',
+    'description' => dt('Check if all required modules are enabled, enable them if they are not, and disable them if the are enabled, but not required.'),
     'aliases' => array('kw-d'),
   );
 
