@@ -35,3 +35,13 @@ $options['root-checks'] = array(
     )
   )
 );
+
+$options['update-commands'] = array_fill_keys(
+  array(
+    'updatedb',
+    'kraftwagen-dependencies',
+    'features-revert-all',
+    'kraftwagen-manifests',
+  ),
+  array('--yes')
+);

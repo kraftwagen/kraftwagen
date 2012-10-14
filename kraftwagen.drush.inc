@@ -46,6 +46,12 @@ function kraftwagen_drush_command() {
     'aliases' => array('kw-d'),
   );
 
+  $items['kraftwagen-update'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+    'description' => dt('Update a Kraftwagen site'),
+    'aliases' => array('kw-u'),
+  );
+
   return $items;
 }
 
