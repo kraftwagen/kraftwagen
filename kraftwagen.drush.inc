@@ -1,6 +1,12 @@
 <?php
 
 /**
+ * @file
+ * Kraftwagen provides drush command for a _everything in code_ and _install
+ * profile_ based Drupal development workflow.
+ */
+
+/**
  * Implements hook_drush_command().
  */
 function kraftwagen_drush_command() {

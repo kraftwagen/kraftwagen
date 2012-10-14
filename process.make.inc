@@ -2,8 +2,8 @@
 
 /**
  * @file
- * This file provides an extension to the `make-process` command, a subcommand 
- * of `make`. 
+ * This file provides an extension to `drush make-process`, a subcommand 
+ * of `drush make`. 
  */
 
 /**
@@ -12,6 +12,6 @@
  * repository.
  */
 function make_download_kraftwagen_directory($name, $download, $download_location) {
-  $result = drush_copy_dir($download['url'],$download_location, FILE_EXISTS_OVERWRITE);
+  $result = drush_copy_dir($download['url'], $download_location, FILE_EXISTS_OVERWRITE);
   return $result ? $download_location : FALSE;
 }

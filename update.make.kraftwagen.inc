@@ -1,14 +1,24 @@
 <?php
 
 /**
- * Implements drush_COMMAND() for kraftwagen-make-update.
+ * @file
+ * This file contains the functions that are required to execute 
+ * `drush kraftwagen-make-update`.
+ */
+
+/**
+ * Implements drush_COMMAND() for `drush kraftwagen-make-update`.
  */
 function drush_kraftwagen_make_update($makefile) {
   require_once(dirname(__FILE__) . '/kraftwagen.info_files.inc');
 
+  // parse
   $info = kraftwagen_parse_info_file($makefile);
-  if ( $info === FALSE || ($info = drush_make_validate_info_file($info)) === FALSE) {
-    return FALSE;
+  if ($info === FALSE) {
+    return drush_set_error(dt('Could not open make file !makefile', array('!makefile' => $makefile)));
+  }
+  if (($info = drush_make_validate_info_file($info)) === FALSE) {
+    return drush_set_error(dt('Could not validate make file !makefile', array('!makefile' => $makefile)));
   }
   
   // get updated version of the info
@@ -30,6 +40,12 @@ function drush_kraftwagen_make_update($makefile) {
 
 /**
  * Reads a makefile for projects and updates the versions.
+ * 
+ * @param $info
+ *   The make file info array
+ * 
+ * @return
+ *   The updated info array
  */
 function kraftwagen_update_projects($info) {
   foreach($info['projects'] as $project_name => $project) {

@@ -3,11 +3,11 @@
 /**
  * @file
  * This file contains the functions that are required to execute 
- * `kraftwagen-build`.
+ * `drush kraftwagen-build`.
  */
 
 /**
- * Implements drush_COMMAND_init() for drush kraftwagen-build.
+ * Implements drush_COMMAND_init() for `drush kraftwagen-build`.
  */
 function drush_kraftwagen_build_init() {
   require_once dirname(__FILE__) . '/kraftwagen.context.inc';
@@ -15,7 +15,7 @@ function drush_kraftwagen_build_init() {
 }
 
 /**
- * Implements drush_COMMAND() for drush kraftwagen-build.
+ * Implements drush_COMMAND() for `drush kraftwagen-build`.
  */
 function drush_kraftwagen_build() {
   // find out where the Kraftwagen root is
@@ -54,6 +54,7 @@ function drush_kraftwagen_build() {
     return $build_dir;
   }
 
+  // get a maybe existant build out of the way
   if (!($result = kraftwagen_build_manage_existing_target($dir, $target_dir))) {
     return $result;
   }
@@ -69,6 +70,9 @@ function drush_kraftwagen_build() {
 
 /**
  * Find where to store a build.
+ *
+ * @param $root
+ *   Kraftwagen root path
  *
  * @return 
  *   The path to the directory to store the build in. This directory does not 
@@ -111,6 +115,9 @@ function kraftwagen_build_determine_target($root) {
 /**
  * Find out where to store the make file.
  *
+ * @param $root
+ *   Kraftwagen root path
+ *
  * @return
  *   The path to the make file location. The file does not always already exist.
  *   If no destination could be determined, FALSE is returned.
@@ -143,6 +150,9 @@ function kraftwagen_build_determine_makefile_destination($root) {
  * Create a new make file, from a given source directory. 
  *
  * The make file will be created in a temporary file.
+ *
+ * @param $src_dir
+ *   The Kraftwagen source directory path.
  *
  * @return
  *   The path to where the new make file is stored. If no make file could be

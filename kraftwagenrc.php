@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Kraftagen settings defaults
+ * Kraftwagen settings defaults
  */
 
 // directory names
@@ -17,6 +17,7 @@ foreach ($dirs as $dir) {
   $options["{$dir}-dir"] = current(array_reverse(explode('-', $dir)));
 }
 
+// other settings
 $options += array(
   'make-file' => 'build.make',
   'make-file-tpl' => 'build.make.tpl',

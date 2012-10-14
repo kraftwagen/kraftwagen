@@ -1,6 +1,14 @@
 <?php
 
+/**
+ * @file
+ * This file contains the functions that are required to execute
+ * `drush kraftwagen-create-project`.
+ */
 
+/**
+ * Implements drush_COMMAND for `drush kraftwagen-create-project`.
+ */
 function drush_kraftwagen_create_project($dir = null) {
   $dir = realpath($dir ? $dir : getcwd());
 
@@ -67,7 +75,13 @@ function drush_kraftwagen_create_project($dir = null) {
 }
 
 /**
- * Create a system name from a human readable name
+ * Internal helper function. Create a system name from a human readable name.
+ *
+ * @param $label
+ *   A human readable project name
+ * 
+ * @return
+ *   The project name converted to a allowed system name
  */
 function _kraftwagen_generate_name($label) {
   // convert to lowercase, replace every non-alphanumeric character with an 
@@ -77,20 +91,39 @@ function _kraftwagen_generate_name($label) {
 }
 
 /**
- * Check if a given name is a valid system name
+ * Interal helper function. Check if a given name is a valid system name.
+ *
+ * @param $name
+ *   The name to validate
+ *
+ * @return
+ *   TRUE if the name is valid, FALSE if it isn't
  */
 function _kraftwagen_validate_name($name) {
   // make sure it consists only of alphanumeric characters and underscores and
   // does not start with a number. 
-  $valid = preg_match('/^[a-z_][a-z0-9_]*$/', $name);
-  if (!$valid) {
-    drush_set_error(dt('Only lowercase alphanumeric characters and underscores are allowed. The input cannot start with a number.'));
+  if (!preg_match('/^[a-z_][a-z0-9_]*$/', $name)) {
+    return drush_set_error(dt('Only lowercase alphanumeric characters and underscores are allowed. The input cannot start with a number.'));
   }
-  return $valid;
+
+  return TRUE;
 }
 
 /**
- * Create drush prompt that runs the input through a validate callback
+ * Internal helper function. Wrapper around drush_prompt that runs the input 
+ * through a validate callback.
+ *
+ * @param $prompt
+ *   The text which is displayed to the user.
+ * @param $default
+ *   Optional. The default value of the input.
+ * @param $required
+ *   Optional. If TRUE, user may continue even when no value is in the input.
+ * @param $validate_callback
+ *   Optional. The callback to call to check if the input is valid.
+ * 
+ * @return
+ *   The user input, after being validated.
  */
 function _kraftwagen_drush_prompt_validate($prompt, $default = NULL, $required = TRUE, $validate_callback = NULL) {
   while (TRUE) {
@@ -108,7 +141,20 @@ function _kraftwagen_drush_prompt_validate($prompt, $default = NULL, $required =
   }
 }
 
-
+/**
+ * Internal helper function. Recursively copy a directory, while replacing 
+ * strings in file and directory names and in file contents.
+ *
+ * @param $src_dir
+ *   The path to the directory to copy from
+ * @param $dest_dir
+ *   The path of the directory to copy to
+ * @param $filename_replacements
+ *   Optional. Associative array of string replacements in file and directory 
+ *   names.
+ * @param $content_replacements
+ *   Optional. Associative array of string replacements in file contents.
+ */
 function _kraftwagen_copy_dir($src_dir, $dest_dir, $filename_replacements = array(), $content_replacements = array()) {
   // find the files in the src_dir. The grep and sed, remove 
   // that prefixing dot
