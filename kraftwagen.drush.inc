@@ -52,6 +52,12 @@ function kraftwagen_drush_command() {
     'aliases' => array('kw-u'),
   );
 
+  $items['kraftwagen-install'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_SITE,
+    'description' => dt('Install a Kraftwagen site'),
+    'aliases' => array('kw-i'),
+  );
+
   $items['kraftwagen-project-init'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Initialize a project. This will initialize the environment.'),
@@ -100,16 +106,16 @@ function kraftwagen_drush_init() {
 
 function kraftwagen_commands_sequence_run($option) {
   $commands = kraftwagen_context_get_option($option);
-  _kraftwagen_commands_sequence_run($commands);
+  kraftwagen_commands_sequence_run_commands($commands);
 }
 
-function _kraftwagen_commands_sequence_run($commands) {
+function kraftwagen_commands_sequence_run_commands($commands) {
   $available_commands = drush_get_context('DRUSH_COMMANDS');
   
   foreach ($commands as $command => $arguments) {
     if (is_numeric($command)) {
       if (is_array($arguments)) {
-        _kraftwagen_commands_sequence_run($arguments);
+        kraftwagen_commands_sequence_run_commands($arguments);
         continue;
       } else {
         $command = $arguments;

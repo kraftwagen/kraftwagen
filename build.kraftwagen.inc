@@ -331,6 +331,7 @@ function kraftwagen_build_manage_existing_target($root, $target_dir) {
   }
 
   // remove the existing build
+  drush_shell_exec('find %s/sites -type d -depth 1 | xargs chmod +w', $target_dir);
   drush_shell_exec('rm -rf %s', $target_dir);
   return true;
 }
