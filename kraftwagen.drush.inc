@@ -52,6 +52,39 @@ function kraftwagen_drush_command() {
     'aliases' => array('kw-u'),
   );
 
+  $items['kraftwagen-project-init'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Initialize a project. This will initialize the environment.'),
+    'aliases' => array('kw-pi'),
+  );
+
+  $items['kraftwagen-build-init'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Initialize a build. This will link the environment to the build.'),
+    'aliases' => array('kw-bi'),
+  );
+
+  $items['kraftwagen-environment-setup'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Create an empty environment'),
+    'aliases' => array('kw-es'),
+  );
+  $items['kraftwagen-environment-setup-settings'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Push settings into the environment.'),
+    'aliases' => array('kw-ess'),
+  );
+
+  $items['kraftwagen-build-symlink'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Create symlink from the environment into the drupal config directory.'),
+    'aliases' => array('kw-bs'),
+    'arguments' => array(
+      'name' => dt('The name of the file to symlink.')
+    ),
+    'required-arguments' => 1,
+  );
+
   return $items;
 }
 
@@ -63,4 +96,28 @@ function kraftwagen_drush_init() {
   // kraftwagenrc.php.
   require_once dirname(__FILE__) . '/kraftwagen.context.inc';
   kraftwagen_context_load_default_config();
+}
+
+function kraftwagen_commands_sequence_run($option) {
+  $commands = kraftwagen_context_get_option($option);
+  _kraftwagen_commands_sequence_run($commands);
+}
+
+function _kraftwagen_commands_sequence_run($commands) {
+  $available_commands = drush_get_context('DRUSH_COMMANDS');
+  
+  foreach ($commands as $command => $arguments) {
+    if (is_numeric($command)) {
+      if (is_array($arguments)) {
+        _kraftwagen_commands_sequence_run($arguments);
+        continue;
+      } else {
+        $command = $arguments;
+        $arguments = array();
+      }
+    }
+    if (isset($available_commands[$command])) {
+      drush_invoke_process('@self', $command, $arguments);
+    }
+  }
 }

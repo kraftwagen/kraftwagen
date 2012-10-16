@@ -10,7 +10,6 @@
  * Implements drush_COMMAND_init() for `drush kraftwagen-build`.
  */
 function drush_kraftwagen_build_init() {
-  require_once dirname(__FILE__) . '/kraftwagen.context.inc';
   kraftwagen_context_init_kraftwagen_root();
 }
 
@@ -226,6 +225,7 @@ function kraftwagen_build_makefile_manage_generated($root, $generated_make_file,
     if ($result) {
       // first try to archive the existing file
       if ($can_archive) {
+        require_once dirname(__FILE__) . '/kraftwagen.archive.inc';
         if (!($archive_dest = kraftwagen_archive_file($file_make, $current_make_file))) {
           return drush_set_error(dt('Could not archive make file.'));
         }
@@ -321,7 +321,8 @@ function kraftwagen_build_manage_existing_target($root, $target_dir) {
 
   // first try to archive the existing build
   if ($can_archive) {
-    $archive_dest = kraftwagen_archive_dir($dir_build ? $dir_build : 'build', $target_dir);
+    require_once dirname(__FILE__) . '/kraftwagen.archive.inc';
+    $archive_dest = kraftwagen_archive_directory($dir_build ? $dir_build : 'build', $target_dir);
     if ($archive_dest) {
       drush_log(dt('Build archived to !dest.', array('!dest' => $archive_dest)), 'success');
     } else {
