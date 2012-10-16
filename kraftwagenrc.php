@@ -50,7 +50,7 @@ $options['update-commands'] = array_fill_keys(
     'updatedb',
     'kraftwagen-dependencies',
     'features-revert-all',
-    'kraftwagen-manifests',
+    'kw-manifests',
   ),
   array('--yes')
 );
