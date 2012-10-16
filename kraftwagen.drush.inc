@@ -124,6 +124,8 @@ function kraftwagen_commands_sequence_run_commands($commands) {
     }
     if (isset($available_commands[$command])) {
       drush_invoke_process('@self', $command, $arguments);
+    } else {
+      drush_log(dt("Command !command not found", array('!command' => $command)), 'error');
     }
   }
 }
