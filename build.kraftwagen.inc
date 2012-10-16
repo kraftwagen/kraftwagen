@@ -171,7 +171,7 @@ function kraftwagen_build_makefile_from_template($src_dir) {
   }
 
   // generate new make file in tmp
-  require_once dirname(__FILE__) . '/kraftwagen.fileutils.inc';
+  require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
   $tmp_file = drush_tempnam('kw');
   kraftwagen_file_replace($src_dir . DIRECTORY_SEPARATOR . $dir_src_tools . DIRECTORY_SEPARATOR . $file_make_tpl, $tmp_file, array(
     '**SRC_DIR**' => $src_dir,
@@ -199,7 +199,7 @@ function kraftwagen_build_makefile_from_template($src_dir) {
 function kraftwagen_build_makefile_manage_generated($root, $generated_make_file, $current_make_file) {
   if (is_file($current_make_file)) {
 
-    require_once dirname(__FILE__) . '/kraftwagen.fileutils.inc';
+    require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
     if (kraftwagen_compare_files($generated_make_file, $current_make_file)) {
       drush_log(dt('New make file generated, but it turned out to be the same as the existing file.'), 'notice');
       return true;
@@ -225,7 +225,7 @@ function kraftwagen_build_makefile_manage_generated($root, $generated_make_file,
     if ($result) {
       // first try to archive the existing file
       if ($can_archive) {
-        require_once dirname(__FILE__) . '/kraftwagen.archive.inc';
+        require_once dirname(__FILE__) . '/includes/kraftwagen.archive.inc';
         if (!($archive_dest = kraftwagen_archive_file($file_make, $current_make_file))) {
           return drush_set_error(dt('Could not archive make file.'));
         }
@@ -321,7 +321,7 @@ function kraftwagen_build_manage_existing_target($root, $target_dir) {
 
   // first try to archive the existing build
   if ($can_archive) {
-    require_once dirname(__FILE__) . '/kraftwagen.archive.inc';
+    require_once dirname(__FILE__) . '/includes/kraftwagen.archive.inc';
     $archive_dest = kraftwagen_archive_directory($dir_build ? $dir_build : 'build', $target_dir);
     if ($archive_dest) {
       drush_log(dt('Build archived to !dest.', array('!dest' => $archive_dest)), 'success');

@@ -162,7 +162,7 @@ function _kraftwagen_copy_dir($src_dir, $dest_dir, $filename_replacements = arra
   $files = drush_shell_exec_output();
 
   // make sure the kraftwagen_file_replace function is available
-  require_once dirname(__FILE__) . '/kraftwagen.fileutils.inc';
+  require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
   
   // loop over the files. $file starts with a slash
   foreach ($files as $file) {

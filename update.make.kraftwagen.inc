@@ -10,7 +10,7 @@
  * Implements drush_COMMAND() for `drush kraftwagen-make-update`.
  */
 function drush_kraftwagen_make_update($makefile) {
-  require_once(dirname(__FILE__) . '/kraftwagen.info_files.inc');
+  require_once dirname(__FILE__) . '/includes/kraftwagen.info_files.inc';
 
   // parse
   $info = kraftwagen_parse_info_file($makefile);

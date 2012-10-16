@@ -100,7 +100,7 @@ function kraftwagen_drush_command() {
 function kraftwagen_drush_init() {
   // load the context handling and fill it with the default values in
   // kraftwagenrc.php.
-  require_once dirname(__FILE__) . '/kraftwagen.context.inc';
+  require_once dirname(__FILE__) . '/includes/kraftwagen.context.inc';
   kraftwagen_context_load_default_config();
 }
 
