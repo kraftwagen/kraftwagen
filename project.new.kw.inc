@@ -3,13 +3,13 @@
 /**
  * @file
  * This file contains the functions that are required to execute
- * `drush kraftwagen-create-project`.
+ * `drush kw-new-project`.
  */
 
 /**
- * Implements drush_COMMAND for `drush kraftwagen-create-project`.
+ * Implements drush_COMMAND for `drush kw-new-project`.
  */
-function drush_kraftwagen_create_project($dir = null) {
+function drush_kraftwagen_kw_new_project($dir = null) {
   $dir = realpath($dir ? $dir : getcwd());
 
   // if the dir has a kraftwagenrc file, we should load it

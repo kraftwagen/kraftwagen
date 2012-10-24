@@ -12,83 +12,116 @@
 function kraftwagen_drush_command() {
   $items = array();
 
-  $items['kraftwagen-create-project'] = array(
+  $items['kw-new-project'] = array( // kw-new-project
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Create a new project. This will setup the basic directory and settings stuff for you.'),
+    'description' => dt('Create a new project. This will create an new source directory from a Git skeleton repository.'),
     'arguments' => array(
       'directory' => dt('The directory to create the project in. Defaults to the current directory'),
     ),
-    'aliases' => array('kw-cp'),
+    'aliases' => array('kw-np'),
     'options' => array(
       'force' => dt('Forces execution of this command, even if the specified source dir already exists.'),
     ),
   );
 
-  $items['kraftwagen-build'] = array(
+  // split up, so we can easily do this with capistrano (or any other automated deployment tool)
+  $items['kw-build'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Create a build from the source'),
     'aliases' => array('kw-b'),
   );
 
-  $items['kraftwagen-make-update'] = array(
+  $items['kw-generate-makefile'] = array(
+    'hidden' => TRUE,
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Generate a new make file from the source'),
+    'arguments' => array(
+      'location' => dt('The location where to store the new makefile')
+    ),
+    'required-arguments' => 1,
+  );
+
+  $items['kw-activate-build'] = array(
+    'hidden' => TRUE,
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Link a symlink to the specified build'),
+    'arguments' => array(
+      'build' => dt('The location of the build'),
+    ),
+    'required-arguments' => 1,
+  );
+
+  $items['kw-update-makefile'] = array( 
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Update an existing makefile to the newest version of contributed modules. This will NOT do any major updates.'),
     'arguments' => array(
       'makefile.make' => dt('The makefile to update. As this command will actually change this file, it should be readable and writeable, and you should backup it, or have it under version control.')
     ),
     'required-arguments' => 1,
-    'aliases' => array('kw-mu'),
+    'aliases' => array('kw-um'),
   );
 
-  $items['kraftwagen-dependencies'] = array(
+  $items['kw-apply-module-dependencies'] = array( 
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
     'description' => dt('Check if all required modules are enabled, enable them if they are not, and disable them if the are enabled, but not required.'),
-    'aliases' => array('kw-d'),
+    'aliases' => array('kw-amd'),
   );
 
-  $items['kraftwagen-update'] = array(
+  $items['kw-update'] = array( 
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
-    'description' => dt('Update a Kraftwagen site'),
+    'description' => dt('Update a Kraftwagen project. Runs all commands necessary to bring the database in sync with code in the build.'),
     'aliases' => array('kw-u'),
   );
 
-  $items['kraftwagen-install'] = array(
+  $items['kw-init-database'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_SITE,
-    'description' => dt('Install a Kraftwagen site'),
-    'aliases' => array('kw-i'),
+    'description' => dt('Initialize (or re-initialize) the database for a Kraftwagen build.'),
+    'aliases' => array('kw-id'),
   );
 
-  $items['kraftwagen-project-init'] = array(
+  $items['kw-setup'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Initialize a project. This will initialize the environment.'),
-    'aliases' => array('kw-pi'),
+    'description' => dt('Sets up the environment, settings files and uploaded files directory for a Kraftwagen project.'),
+    'aliases' => array('kw-s'),
   );
 
-  $items['kraftwagen-build-init'] = array(
+  $items['kw-setup-env'] = array(
+    'hidden' => TRUE,
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Initialize a build. This will link the environment to the build.'),
-    'aliases' => array('kw-bi'),
+    'description' => dt('Attempts to create an empty environment, defaulting to \'production\', for a Kraftwagen project.'),
   );
 
-  $items['kraftwagen-environment-setup'] = array(
+  $items['kw-setup-settings'] = array(
+    'hidden' => TRUE,
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Create an empty environment'),
-    'aliases' => array('kw-es'),
-  );
-  $items['kraftwagen-environment-setup-settings'] = array(
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Push settings into the environment.'),
-    'aliases' => array('kw-ess'),
+    'description' => dt('Attempts to copy the settings files from the source into the correct location for a Kraftwagen project.'),
   );
 
-  $items['kraftwagen-build-symlink'] = array(
+  $items['kw-setup-upload-dir'] = array(
+    'hidden' => TRUE,
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Create symlink from the environment into the drupal config directory.'),
+    'description' => dt('Attempts to create the \'user uploaded files\' directory for a Kraftwagen project.'),
+  );
+
+  $items['kw-setup-symlinks'] = array(
+    'hidden' => TRUE,
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Creates or recreates symlinks for the settings files and the uploaded files directory into the specified Kraftwagen build.'),
+    'arguments' => array(
+      'build' => dt('The build to create the symlinks in. Defaults to the currently active build.'),
+    ),
+  );
+
+  $items['kw-setup-symlink'] = array(
+    'hidden' => TRUE,
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Creates or recreates a symlink into the specified Kraftwagen build.'),
     'aliases' => array('kw-bs'),
     'arguments' => array(
-      'name' => dt('The name of the file to symlink.')
+      'build' => dt('The build to create the symlink in.'),
+      'name' => dt('The name of the file or dir to symlink.')
     ),
-    'required-arguments' => 1,
+    'required-arguments' => 2,
   );
 
   return $items;
@@ -104,11 +137,19 @@ function kraftwagen_drush_init() {
   kraftwagen_context_load_default_config();
 }
 
-function kraftwagen_commands_sequence_run($option) {
+/**
+ * Run a sequence of drush commands that are defined in Kraftwagen context 
+ * option.
+ */
+function kraftwagen_commands_sequence_run($option, $replacements = array()) {
   $commands = kraftwagen_context_get_option($option);
+  $commands = kraftwagen_commands_sequence_replace($commands, $replacements);
   kraftwagen_commands_sequence_run_commands($commands);
 }
 
+/**
+ * Run a sequence of drush commands.
+ */
 function kraftwagen_commands_sequence_run_commands($commands) {
   $available_commands = drush_get_context('DRUSH_COMMANDS');
   
@@ -123,9 +164,28 @@ function kraftwagen_commands_sequence_run_commands($commands) {
       }
     }
     if (isset($available_commands[$command])) {
-      drush_invoke_process('@self', $command, $arguments);
+      $result = drush_invoke_process('@self', $command, $arguments);
+      if (!$result || !empty($result['error_status'])) {
+        return drush_set_error(dt("Called command !command returned an error.", array('!command' => $command)));
+      }
     } else {
       drush_log(dt("Command !command not found", array('!command' => $command)), 'error');
     }
+  }
+}
+
+function kraftwagen_commands_sequence_replace($data, $replacements) {
+  if (is_array($data)) {
+    $result = array();
+    foreach ($data as $key => $value) {
+      $key = kraftwagen_commands_sequence_replace($key, $replacements);
+      $value = kraftwagen_commands_sequence_replace($value, $replacements);
+      $result[$key] = $value;
+    }
+    return $result;
+  } elseif (is_string($data)) {
+    return str_replace(array_keys($replacements), array_values($replacements), $data);
+  } else {
+    return $data;
   }
 }

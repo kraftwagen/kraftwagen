@@ -3,13 +3,13 @@
 /**
  * @file
  * This file contains the functions that are required to execute
- * `drush kraftwagen-dependencies`.
+ * `drush kw-apply-module-dependencies`.
  */
 
 /**
- * Implements drush_COMMAND for `drush kraftwagen-dependencies`.
+ * Implements drush_COMMAND for `drush kw-apply-module-dependencies`.
  */
-function drush_kraftwagen_dependencies() {
+function drush_kraftwagen_kw_apply_module_dependencies() {
   // enable watchdog printing to show information about enabled, disabled, 
   // installed and uninstalled modules
   drush_set_option('watchdog', 'print');

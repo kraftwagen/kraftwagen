@@ -3,13 +3,13 @@
 /**
  * @file
  * This file contains the functions that are required to execute 
- * `drush kraftwagen-make-update`.
+ * `drush kw-update-makefile`.
  */
 
 /**
- * Implements drush_COMMAND() for `drush kraftwagen-make-update`.
+ * Implements drush_COMMAND() for `drush kw-update-makefile`.
  */
-function drush_kraftwagen_make_update($makefile) {
+function drush_kraftwagen_kw_update_makefile($makefile) {
   require_once dirname(__FILE__) . '/includes/kraftwagen.info_files.inc';
 
   // parse

@@ -3,20 +3,20 @@
 /**
  * @file
  * This file contains the functions that are required to execute
- * `drush kraftwagen-environment-setup`.
+ * `drush kw-setup-env`.
  */
 
 /**
- * Implements drush_COMMAND_init() for `drush kraftwagen-environment-setup`.
+ * Implements drush_COMMAND_init() for `drush kw-setup-env`.
  */
-function drush_kraftwagen_environment_setup_init() {
+function drush_kw_setup_env_init() {
   kraftwagen_context_init_kraftwagen_root();
 }
 
 /**
- * Implements drush_COMMAND for `drush kraftwagen-environment-setup`.
+ * Implements drush_COMMAND for `drush kw-setup-env`.
  */
-function drush_kraftwagen_environment_setup() {
+function drush_kraftwagen_kw_setup_env() {
   // find out where the Kraftwagen root is
   $root = kraftwagen_context_get_option('root-path');
 

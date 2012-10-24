@@ -3,20 +3,20 @@
 /**
  * @file
  * This file contains the functions that are required to execute
- * `drush kraftwagen-environment-setup-settings`.
+ * `drush kw-setup-settings`.
  */
 
 /**
- * Implements drush_COMMAND_init() for `drush kraftwagen-environment-setup-settings`.
+ * Implements drush_COMMAND_init() for `drush kw-setup-settings`.
  */
-function drush_kraftwagen_environment_setup_settings_init() {
+function drush_kw_setup_settings_init() {
   kraftwagen_context_init_kraftwagen_root();
 }
 
 /**
- * Implements drush_COMMAND for `drush kraftwagen-environment-setup-settings`.
+ * Implements drush_COMMAND for `drush kw-setup-settings`.
  */
-function drush_kraftwagen_environment_setup_settings() {
+function drush_kraftwagen_kw_setup_settings() {
   // find out where the Kraftwagen root is
   $root = kraftwagen_context_get_option('root-path');
 
@@ -58,16 +58,5 @@ function drush_kraftwagen_environment_setup_settings() {
 
     @copy($root . DIRECTORY_SEPARATOR . $dir_src . DIRECTORY_SEPARATOR . $dir_src_cnf . DIRECTORY_SEPARATOR . $file_name, $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_name);
     drush_log(dt('Copied !key from !src to !dest', array('!key' => str_replace('-', ' ', $key), '!src' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_name, '!dest' => $root . DIRECTORY_SEPARATOR . $dir_src . DIRECTORY_SEPARATOR . $dir_src_cnf . DIRECTORY_SEPARATOR . $file_name)), 'success');
-  }
-
-  if (!($dir_files = kraftwagen_context_get_option('files-dir'))) {
-    return drush_set_error(dt('No files dir name set.')); 
-  }
-
-  if (is_dir($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files)) {
-    drush_log(dt('Files dir at !path already exists', array('!path' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files)), 'warning');
-  } else {
-    drush_mkdir($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files);
-    drush_log(dt('Files dir at !path created', array('!path' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files)), 'success');
   }
 }

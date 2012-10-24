@@ -3,20 +3,20 @@
 /**
  * @file
  * This file contains the functions that are required to execute 
- * `drush kraftwagen-install`.
+ * `drush kw-init-database`.
  */
 
 /**
- * Implements drush_COMMAND_init() for `drush kraftwagen-install`.
+ * Implements drush_COMMAND_init() for `drush kw-init-database`.
  */
-function drush_kraftwagen_install_init() {
+function drush_kw_init_database_init() {
   kraftwagen_context_init_kraftwagen_root();
 }
 
 /**
- * Implements drush_COMMAND() for `drush kraftwagen-install`.
+ * Implements drush_COMMAND() for `drush kw-init-database`.
  */
-function drush_kraftwagen_install() {
+function drush_kraftwagen_kw_init_database() {
   // find out where the Kraftwagen root is
   $root = kraftwagen_context_get_option('root-path');
 
@@ -37,8 +37,5 @@ function drush_kraftwagen_install() {
 
   $profile_name = $file->name;
 
-  kraftwagen_commands_sequence_run_commands(array(
-    'site-install' => array($profile_name, '--yes'),
-    'kraftwagen-update' => array()
-  ));
+  drush_invoke_process('@self', 'site-install', array($profile_name, '--yes'));
 }

@@ -45,23 +45,31 @@ $options['root-checks'] = array(
   )
 );
 
+$options['build-commands'] = array(
+  'kw-generate-makefile' => array('*make_file_location*'),
+  'make' => array('*make_file_location*', '*target_dir*'),
+  'kw-setup-symlinks' => array('*target_dir*'),
+  'kw-activate-build' => array('*target_dir*'),
+);
+
 $options['update-commands'] = array_fill_keys(
   array(
-    'updatedb',
-    'kraftwagen-dependencies',
-    'features-revert-all',
-    'kw-manifests',
+    'kw-apply-module-dependencies', // make sure all required modules are enabled
+    'updatedb', // run all hook_update_N implementation of enabled modules
+    'features-revert-all', // make sure all feature definitions are applied 
+    'kw-manifests', // run all manifests of all enabled modules
   ),
   array('--yes')
 );
 
-$options['project-init-commands'] = array(
-  'kraftwagen-environment-setup' => array(),
-  'kraftwagen-environment-setup-settings' => array(),
+$options['setup-commands'] = array(
+  'kw-setup-env',
+  'kw-setup-settings',
+  'kw-setup-upload-dir',
 );
 
-$options['build-init-commands'] = array(
-  array('kraftwagen-build-symlink' => array($options['settings-file'])),
-  array('kraftwagen-build-symlink' => array($options['settings-local-file'])),
-  array('kraftwagen-build-symlink' => array($options['files-dir'])),
+$options['setup-symlinks-commands'] = array(
+  array('kw-setup-symlink' => array('*build*', $options['settings-file'])),
+  array('kw-setup-symlink' => array('*build*', $options['settings-local-file'])),
+  array('kw-setup-symlink' => array('*build*', $options['files-dir'])),
 );
