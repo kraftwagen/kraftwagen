@@ -60,16 +60,16 @@ function kraftwagen_drush_command() {
     'aliases' => array('kw-um'),
   );
 
-  $items['kw-apply-module-dependencies'] = array( 
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
-    'description' => dt('Check if all required modules are enabled, enable them if they are not, and disable them if the are enabled, but not required.'),
-    'aliases' => array('kw-amd'),
-  );
-
   $items['kw-update'] = array( 
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
     'description' => dt('Update a Kraftwagen project. Runs all commands necessary to bring the database in sync with code in the build.'),
     'aliases' => array('kw-u'),
+  );
+
+  $items['kw-apply-module-dependencies'] = array( 
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+    'description' => dt('Check if all required modules are enabled, enable them if they are not, and disable them if the are enabled, but not required.'),
+    'aliases' => array('kw-amd'),
   );
 
   $items['kw-init-database'] = array(
