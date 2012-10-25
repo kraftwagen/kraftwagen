@@ -140,16 +140,17 @@ function kraftwagen_drush_init() {
  * Run a sequence of drush commands that are defined in Kraftwagen context 
  * option.
  */
-function kraftwagen_commands_sequence_run($option, $replacements = array()) {
+function kraftwagen_commands_sequence_run($option, $replacements = array(), $fail_on_error = TRUE) {
+  drush_cache_clear_all();
   $commands = kraftwagen_context_get_option($option);
   $commands = kraftwagen_commands_sequence_replace($commands, $replacements);
-  kraftwagen_commands_sequence_run_commands($commands);
+  kraftwagen_commands_sequence_run_commands($commands, $fail_on_error);
 }
 
 /**
  * Run a sequence of drush commands.
  */
-function kraftwagen_commands_sequence_run_commands($commands) {
+function kraftwagen_commands_sequence_run_commands($commands, $fail_on_error = TRUE) {
   $available_commands = drush_get_context('DRUSH_COMMANDS');
   
   foreach ($commands as $command => $arguments) {
@@ -165,10 +166,16 @@ function kraftwagen_commands_sequence_run_commands($commands) {
     if (isset($available_commands[$command])) {
       $result = drush_invoke_process('@self', $command, $arguments);
       if (!$result || !empty($result['error_status'])) {
-        return drush_set_error(dt("Called command !command returned an error.", array('!command' => $command)));
+        $return = drush_set_error(dt("Called command !command returned an error.", array('!command' => $command)));
+        if ($fail_on_error) {
+          return $return;
+        }
       }
     } else {
-      drush_log(dt("Command !command not found", array('!command' => $command)), 'error');
+      $return = drush_set_error(dt("Command !command not found", array('!command' => $command)));
+      if ($fail_on_error) {
+        return $return;
+      }
     }
   }
 }
