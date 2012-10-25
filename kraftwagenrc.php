@@ -52,14 +52,11 @@ $options['build-commands'] = array(
   'kw-activate-build' => array('*target_dir*'),
 );
 
-$options['update-commands'] = array_fill_keys(
-  array(
-    'kw-apply-module-dependencies', // make sure all required modules are enabled
-    'updatedb', // run all hook_update_N implementation of enabled modules
-    'features-revert-all', // make sure all feature definitions are applied 
-    'kw-manifests', // run all manifests of all enabled modules
-  ),
-  array('--yes')
+$options['update-commands'] = array(
+  'kw-apply-module-dependencies' => array(), // make sure all required modules are enabled
+  'updatedb' => array('--yes'), // run all hook_update_N implementation of enabled modules
+  'features-revert-all' => array('--yes'), // make sure all feature definitions are applied 
+  'kw-manifests' => array('--yes'), // run all manifests of all enabled modules
 );
 
 $options['setup-commands'] = array(

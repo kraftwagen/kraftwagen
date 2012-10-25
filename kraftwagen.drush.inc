@@ -151,8 +151,6 @@ function kraftwagen_commands_sequence_run($option, $replacements = array(), $fai
  * Run a sequence of drush commands.
  */
 function kraftwagen_commands_sequence_run_commands($commands, $fail_on_error = TRUE) {
-  $available_commands = drush_get_context('DRUSH_COMMANDS');
-  
   foreach ($commands as $command => $arguments) {
     if (is_numeric($command)) {
       if (is_array($arguments)) {
@@ -163,6 +161,13 @@ function kraftwagen_commands_sequence_run_commands($commands, $fail_on_error = T
         $arguments = array();
       }
     }
+
+    $phase_index = drush_get_context('DRUSH_BOOTSTRAP_PHASE');
+    if ($phase_index >= DRUSH_BOOTSTRAP_DRUPAL_FULL) {
+      _drush_find_commandfiles(DRUSH_BOOTSTRAP_DRUPAL_FULL);
+    }
+    $available_commands = drush_get_commands();
+    
     if (isset($available_commands[$command])) {
       $result = drush_invoke_process('@self', $command, $arguments);
       if (!$result || !empty($result['error_status'])) {
@@ -172,6 +177,7 @@ function kraftwagen_commands_sequence_run_commands($commands, $fail_on_error = T
         }
       }
     } else {
+      print_r(array_keys($available_commands));
       $return = drush_set_error(dt("Command !command not found", array('!command' => $command)));
       if ($fail_on_error) {
         return $return;
