@@ -12,7 +12,7 @@
 function kraftwagen_drush_command() {
   $items = array();
 
-  $items['kw-new-project'] = array( // kw-new-project
+  $items['kw-new-project'] = array( 
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Create a new project. This will create an new source directory from a Git skeleton repository.'),
     'arguments' => array(
@@ -24,7 +24,6 @@ function kraftwagen_drush_command() {
     ),
   );
 
-  // split up, so we can easily do this with capistrano (or any other automated deployment tool)
   $items['kw-build'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Create a build from the source'),

@@ -24,7 +24,6 @@ function drush_kraftwagen_kw_build() {
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
   $make_file_location = drush_tempnam('kw');
 
-
   // find out where to create the new build
   if (!($target_dir = kraftwagen_build_determine_target($root))) {
     return drush_set_error(dt('Could not determine a build target.'));
