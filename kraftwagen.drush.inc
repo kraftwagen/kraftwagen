@@ -69,6 +69,9 @@ function kraftwagen_drush_command() {
   $items['kw-apply-module-dependencies'] = array( 
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
     'description' => dt('Check if all required modules are enabled, enable them if they are not, and disable them if the are enabled, but not required.'),
+    'arguments' => array(
+      'environment' => dt('The environment to use for environment specific dependencies. Defaults to production.'),
+    ),
     'aliases' => array('kw-amd'),
   );
 

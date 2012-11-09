@@ -9,13 +9,31 @@
 /**
  * Implements drush_COMMAND for `drush kw-apply-module-dependencies`.
  */
-function drush_kraftwagen_kw_apply_module_dependencies() {
+function drush_kraftwagen_kw_apply_module_dependencies($environment = 'production') {
   // enable watchdog printing to show information about enabled, disabled, 
   // installed and uninstalled modules
   drush_set_option('watchdog', 'print');
 
-  // get the data we need
-  $files = system_rebuild_module_data();
+  // get the data we need. This is a excerpt of system_rebuild_module_data with
+  // the environment specific dependencies logic inserted
+  $modules = _system_rebuild_module_data();
+  ksort($modules);
+  system_get_files_database($modules, 'module');
+  system_update_files_database($modules, 'module');
+
+  // inject enviroment specific dependencies into the dependencies
+  foreach ($modules as $key => $module) {
+    if (!empty($module->info['env_dependencies'][$environment])) {
+      foreach ($module->info['env_dependencies'][$environment] as $dependency) {
+        $module->info['dependencies'][] = $dependency;
+      }
+    }
+  }
+
+  // resolve dependencies and find out in which order to install modules
+  $files = _module_build_dependencies($modules);
+
+  // get the active profile name
   $profile = drupal_get_profile();
 
   // if we can't gather data about the install profile, we can't do anything
