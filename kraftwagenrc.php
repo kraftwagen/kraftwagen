@@ -56,7 +56,7 @@ $options['update-commands'] = array(
   'kw-apply-module-dependencies' => array('*environment*'), // make sure all required modules are enabled
   'updatedb' => array('--yes'), // run all hook_update_N implementation of enabled modules
   'features-revert-all' => array('--yes'), // make sure all feature definitions are applied 
-  'kw-manifests' => array('--yes'), // run all manifests of all enabled modules
+  'kw-manifests' => array('*environment*', '--yes'), // run all manifests of all enabled modules
 );
 
 $options['setup-commands'] = array(
