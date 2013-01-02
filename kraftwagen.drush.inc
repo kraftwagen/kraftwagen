@@ -126,6 +126,13 @@ function kraftwagen_drush_command() {
     'required-arguments' => 2,
   );
 
+  $items['kw-import-translations'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+    'description' => dt('Import all .po files in the project for enabled components.'),
+    'aliases' => array('kw-it'),
+    'drupal dependencies' => array('locale'),
+  );
+
   return $items;
 }
 
