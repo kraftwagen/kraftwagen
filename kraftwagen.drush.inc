@@ -54,7 +54,8 @@ function kraftwagen_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Update an existing makefile to the newest version of contributed modules. This will NOT do any major updates.'),
     'arguments' => array(
-      'makefile.make' => dt('The makefile to update. As this command will actually change this file, it should be readable and writeable, and you should backup it, or have it under version control.')
+      'makefile.make' => dt('The makefile to update. As this command will actually change this file, it should be readable and writeable, and you should backup it, or have it under version control.'),
+      'source_dir' => dt('The location of the source directory'),
     ),
     'required-arguments' => 1,
     'aliases' => array('kw-um'),
