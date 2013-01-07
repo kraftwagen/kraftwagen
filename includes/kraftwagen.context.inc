@@ -28,8 +28,10 @@ define('KRAFTWAGEN_CONTEXT_RUNTIME', 'process');
  * Load the default kraftwagenrc.php file.
  */
 function kraftwagen_context_load_default_config() {
-  if (file_exists(dirname(__FILE__) . '/../' . KRAFTWAGEN_RC)) {
-    kraftwagen_context_load_config_file(dirname(__FILE__) . '/../' . KRAFTWAGEN_RC, KRAFTWAGEN_CONTEXT_DEFAULT);
+  foreach (array(dirname(__FILE__) . '/../' . KRAFTWAGEN_RC, drush_server_home() . '/.drush/' . KRAFTWAGEN_RC) as $file) {
+    if (file_exists($file)) {
+      kraftwagen_context_load_config_file($file, KRAFTWAGEN_CONTEXT_DEFAULT);
+    }
   }
 }
 
@@ -37,7 +39,7 @@ function kraftwagen_context_load_default_config() {
  * Initialize the Kraftwagen root and load the kraftwagenrc.php file in it, if it 
  * exists.
  */
-function kraftwagen_context_init_kraftwagen_root() {
+function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
   // try to find the root
   $root = kraftwagen_context_find_kraftwagen_root(getcwd());
 
@@ -47,7 +49,7 @@ function kraftwagen_context_init_kraftwagen_root() {
     if (file_exists($root . '/' . KRAFTWAGEN_RC)) {
       kraftwagen_context_load_config_file($root . '/' . KRAFTWAGEN_RC, KRAFTWAGEN_CONTEXT_ROOT);
     }
-  } else {
+  } elseif ($required) {
     drush_set_error('kraftwagen', dt('Could not find a Kraftwagen root'));
   }
 }
