@@ -8,7 +8,7 @@
 
 /**
  * Read a info file from disk. Stripped down version of 
- * drush_make_parse_info_file that does not parse includes.
+ * make_parse_info_file that does not parse includes.
  *
  * @param $makefile
  *   The location of the file that should be parsed.
@@ -23,7 +23,7 @@ function kraftwagen_parse_info_file($makefile) {
   }
   
   // parse the makefile
-  if (!($info = _drush_make_parse_info_file($data))) {
+  if (!($info = _drush_drupal_parse_info_file($data))) {
     return drush_set_error(dt('Could not parse make file: %makefile', array('%makefile' => $makefile)));
   }
   

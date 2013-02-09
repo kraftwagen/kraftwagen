@@ -17,7 +17,7 @@ function drush_kraftwagen_kw_update_makefile($makefile) {
   if ($info === FALSE) {
     return drush_set_error(dt('Could not open make file !makefile', array('!makefile' => $makefile)));
   }
-  if (($info = drush_make_validate_info_file($info)) === FALSE) {
+  if (($info = make_validate_info_file($info)) === FALSE) {
     return drush_set_error(dt('Could not validate make file !makefile', array('!makefile' => $makefile)));
   }
   
@@ -48,6 +48,8 @@ function drush_kraftwagen_kw_update_makefile($makefile) {
  *   The updated info array
  */
 function kraftwagen_update_projects($info) {
+  drush_include_engine('release_info', 'updatexml');
+
   foreach($info['projects'] as $project_name => $project) {
     if (isset($project['download'])) {
       drush_log(dt('Project !project is downloaded explicitly instead of normal contrib or core behavior. We will not try to update this.', array('!project' => $project_name)), 'success');
@@ -71,18 +73,16 @@ function kraftwagen_update_projects($info) {
     $major = $exploded_version[0];
     
     // create a new project array that is suitable to pass into 
-    // drush_make_updatexml
-    $project_data = $project + array(
+    // release_info_fetch
+    $request = array(
       'name'     => $project_name,
-      'core'     => $info['core'],
-      'location' => drush_get_option('drush-make-update-default-url'),
+      'version'  => $info['core'] . '-' . $major,
+      'drupal_version' => $info['core'],
+      'status url' => drush_get_option('make-update-default-url', RELEASE_INFO_DEFAULT_URL),
     );
-    // let drush_make_updatexml assume we're upgrading to the newest version for
-    // our major
-    $project_data['version'] = $major; 
     
     // try to retrieve project data from drupal.org
-    if (!($project_data_retrieved = drush_make_updatexml($project_data)) || $project_data_retrieved === $project_data) {
+    if (!($project_data_retrieved = release_info_fetch($request)) || $project_data_retrieved === $project_data) {
       // if no data is retrieved, this project is probably not updatable via 
       // drupal.org
       drush_log(dt('Project !project could not be found and was not updated'), array('!project' => $project_name), 'warning');
