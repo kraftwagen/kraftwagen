@@ -96,7 +96,8 @@ function kraftwagen_update_projects($info) {
     if (version_compare($project_data_retrieved['version'], $project['version'], '>')) {
       $info['projects'][$project_name]['version'] = $project_data_retrieved['version'];
       drush_log(dt('Project !project has been upgraded to version !version.', array('!project' => $project_name, '!version' => $project_data_retrieved['version'])), 'success');
-    } else {
+    }
+    else {
       drush_log(dt('Project !project has not been upgraded because it already is at the latest version.', array('!project' => $project_name, '!version' => $project['version'])), 'ok');
     }
   }

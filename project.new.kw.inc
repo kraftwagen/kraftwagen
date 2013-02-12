@@ -46,7 +46,8 @@ function drush_kraftwagen_kw_new_project($dir = null) {
   // Clone the skeleton repository.
   if ($branch) {
     $args = array('git clone -b %s %s %s', $branch, $skeleton, $tempdir);
-  } else {
+  }
+  else {
     $args = array('git clone %s %s', $skeleton, $tempdir);
   }
   if (call_user_func_array('drush_shell_exec', $args)) {
@@ -69,7 +70,8 @@ function drush_kraftwagen_kw_new_project($dir = null) {
     );
 
     drush_log(dt('Copied the project skeleton to your source directory.'), 'ok');
-  } else {
+  }
+  else {
     return drush_set_error(dt('Could not download the repository from %path', array('%path' => $skeleton)));
   }
 }
@@ -172,7 +174,8 @@ function _kraftwagen_copy_dir($src_dir, $dest_dir, $filename_replacements = arra
 
     if (is_dir($src_path)) {
       drush_mkdir($dest_path);
-    } else {
+    }
+    else {
       kraftwagen_file_replace($src_path, $dest_path, $content_replacements);
     }
   }

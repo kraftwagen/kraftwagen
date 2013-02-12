@@ -19,7 +19,8 @@ function kraftwagen_commands_sequence_run_commands($commands, $fail_on_error = T
       if (is_array($arguments)) {
         kraftwagen_commands_sequence_run_commands($arguments);
         continue;
-      } else {
+      }
+      else {
         $command = $arguments;
         $arguments = array();
       }
@@ -39,7 +40,8 @@ function kraftwagen_commands_sequence_run_commands($commands, $fail_on_error = T
           return $return;
         }
       }
-    } else {
+    }
+    else {
       $return = drush_set_error(dt("Command !command not found", array('!command' => $command)));
       if ($fail_on_error) {
         return $return;
@@ -57,9 +59,11 @@ function kraftwagen_commands_sequence_replace($data, $replacements) {
       $result[$key] = $value;
     }
     return $result;
-  } elseif (is_string($data)) {
+  }
+  elseif (is_string($data)) {
     return str_replace(array_keys($replacements), array_values($replacements), $data);
-  } else {
+  }
+  else {
     return $data;
   }
 }

@@ -116,7 +116,8 @@ function kraftwagen_build_manage_existing_target($root, $target_dir) {
   $archive_dest = kraftwagen_archive_directory($dir_build ? $dir_build : 'build', $target_dir);
   if ($archive_dest) {
     drush_log(dt('Build archived to !dest.', array('!dest' => $archive_dest)), 'success');
-  } else {
+  }
+  else {
     return drush_set_error(dt('Could not archive build.'));
   }
 

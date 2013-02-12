@@ -38,12 +38,14 @@ function drush_kraftwagen_kw_activate_build($build) {
       require_once dirname(__FILE__) . '/includes/kraftwagen.archive.inc';
       if (is_dir($root . DIRECTORY_SEPARATOR . $dir_build)) {
         $archive_dest = kraftwagen_archive_directory($dir_build, $root . DIRECTORY_SEPARATOR . $dir_build);
-      } else {
+      }
+      else {
         $archive_dest = kraftwagen_archive_file($dir_build, $root . DIRECTORY_SEPARATOR . $dir_build);
       }
       if ($archive_dest) {
         drush_log(dt('Build archived to !dest.', array('!dest' => $archive_dest)), 'success');
-      } else {
+      }
+      else {
         return drush_set_error(dt('Could not archive build.'));
       }
     }

@@ -31,7 +31,8 @@ function drush_kraftwagen_kw_setup_upload_dir() {
 
   if (is_dir($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files)) {
     drush_log(dt('Files dir at !path already exists', array('!path' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files)), 'warning');
-  } else {
+  }
+  else {
     drush_mkdir($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files);
     drush_log(dt('Files dir at !path created', array('!path' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files)), 'success');
   }

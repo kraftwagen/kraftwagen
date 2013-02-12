@@ -28,7 +28,8 @@ function drush_kraftwagen_kw_setup_env() {
   if (!is_dir($root . DIRECTORY_SEPARATOR . $dir_cnf)) {
     drush_mkdir($root . DIRECTORY_SEPARATOR . $dir_cnf);
     drush_log(dt('Config directory !dir created', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_cnf)), 'success');
-  } else {
+  }
+  else {
     drush_log(dt('Config directory !dir already exists', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_cnf)), 'warning');
   }
 
@@ -44,7 +45,8 @@ function drush_kraftwagen_kw_setup_env() {
     file_put_contents($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, $default_environment);
 
     drush_log(dt('Setup environment in !file to !environment', array('!file' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, '!environment' => $default_environment)), 'success');
-  } else {
+  }
+  else {
     drush_log(dt('Environment already set in !file', array('!file' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment)), 'warning');
   }
 }

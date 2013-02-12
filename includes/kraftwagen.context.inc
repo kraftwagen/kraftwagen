@@ -49,7 +49,8 @@ function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
     if (file_exists($root . '/' . KRAFTWAGEN_RC)) {
       kraftwagen_context_load_config_file($root . '/' . KRAFTWAGEN_RC, KRAFTWAGEN_CONTEXT_ROOT);
     }
-  } elseif ($required) {
+  }
+  elseif ($required) {
     drush_set_error('kraftwagen', dt('Could not find a Kraftwagen root'));
   }
 }
@@ -142,7 +143,8 @@ function kraftwagen_context_check_directory($path) {
       if (!$result) {
         $return = FALSE; break;
       }
-    } else {
+    }
+    else {
       $return = FALSE; break;
     }
   }
