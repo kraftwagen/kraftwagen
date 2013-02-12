@@ -58,7 +58,8 @@ function kraftwagen_update_projects($info) {
     // Projects without a version specified are serious upgrade risk.
     if (empty($project) || empty($project['version']) || $project['version'] == DRUSH_MAKE_VERSION_BEST) {
       drush_log(dt('No version specified for project !project. This can lead to unintended upgrades.', array('!project' => $project_name)), 'warning');
-      continue; // don't try to determine a better version
+      // Don't try to determine a better version.
+      continue; 
     }
 
     // Projects with just a major version specified are theoretically a smaller
@@ -66,7 +67,8 @@ function kraftwagen_update_projects($info) {
     $exploded_version = explode('.', $project['version']);
     if (count($exploded_version) < 2) {
       drush_log(dt('Only a major version specified for project !project. This can lead to unintended upgrades.', array('!project' => $project_name)), 'warning');
-      continue; // don't try to determine a better version
+      // Don't try to determine a better version.
+      continue; 
     }
 
     // Get major version.

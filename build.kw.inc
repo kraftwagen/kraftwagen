@@ -20,11 +20,11 @@ function drush_kraftwagen_kw_build() {
   // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
 
-  // Generate new make file in tmp
+  // Generate new make file in tmp.
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
   $make_file_location = drush_tempnam('kw');
 
-  // Gind out where to create the new build
+  // Gind out where to create the new build.
   if (!($target_dir = kraftwagen_build_determine_target($root))) {
     return drush_set_error(dt('Could not determine a build target.'));
   }
@@ -99,7 +99,7 @@ function kraftwagen_build_determine_target($root) {
  *   TRUE on success, FALSE on failure
  */
 function kraftwagen_build_manage_existing_target($root, $target_dir) {
-  // Jump out if we do not have an existing target
+  // Jump out if we do not have an existing target.
   if (!is_dir($target_dir)) {
     return true;
   }

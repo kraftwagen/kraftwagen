@@ -36,10 +36,10 @@ function kraftwagen_import_translations_batch() {
   if (count($languages[1])) {
     $language_list = join('|', array_keys($languages[1]));
 
-    // Drupal core
+    // Drupal core.
     $files = array_merge($files, file_scan_directory(DRUPAL_ROOT . '/translations', '/(^|\.)(' . $language_list . ')\.po$/', array('recurse' => FALSE)));
 
-    // Collect all files to import for all components. Profile will be imported last
+    // Collect all files to import for all components. Profile will be imported last.
     $result = db_query("SELECT name, filename FROM system WHERE status = 1 ORDER BY (type = 'profile'), weight, name");
     foreach ($result as $component) {
       // Collect all files for this component in all enabled languages, named

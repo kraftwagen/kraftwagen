@@ -72,4 +72,3 @@ tools like [Capistrano](http://capistranorb.com/).
   will run all
   [Kraftwagen Manifests](https://github.com/kraftwagen/kw-manifests). This
   command can only be ran in the build.
-

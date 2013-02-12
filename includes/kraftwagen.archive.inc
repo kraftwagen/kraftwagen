@@ -18,7 +18,7 @@ function kraftwagen_archive_prepare_location($name, $path) {
       return drush_set_error(dt('Could not archive !name from !path, because the directory !dir could not be created.', array('!name' => $name, '!path' => $path, '!dir' => $root . DIRECTORY_SEPARATOR . $dir_archive)));
     }
 
-    // Notice, usually not visible
+    // Notice, usually not visible.
     drush_log(dt('Directory !dir created to archive !name.', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_archive, '!name' => $name)));
   }
 
@@ -31,7 +31,7 @@ function kraftwagen_archive_prepare_location($name, $path) {
       return drush_set_error(dt('Could not archive !name from !path, because the directory !dir could not be created.', array('!name' => $name, '!path' => $path, '!dir' => $root . DIRECTORY_SEPARATOR . $dir_archive . DIRECTORY_SEPARATOR . $name)));
     }
 
-    // Notice, usually not visible
+    // Notice, usually not visible.
     drush_log(dt('Directory !dir created to archive !name.', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_archive . DIRECTORY_SEPARATOR . $name, '!name' => $name)));
   }
 
@@ -77,5 +77,4 @@ function kraftwagen_archive_directory($name, $path) {
 
   return $target;
 }
-
 

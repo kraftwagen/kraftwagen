@@ -17,7 +17,7 @@ function drush_kw_activate_build_init() {
  * Implements drush_COMMAND() for `drush kw-activate-build`.
  */
 function drush_kraftwagen_kw_activate_build($build) {
-  // Find out where the Kraftwagen root is
+  // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
 
   $dir_build = kraftwagen_context_get_option('build-dir');
@@ -34,7 +34,7 @@ function drush_kraftwagen_kw_activate_build($build) {
   // while the required information is actually very simple.
   if (@lstat($root . DIRECTORY_SEPARATOR . $dir_build)) {
     if (!is_link($root . DIRECTORY_SEPARATOR . $dir_build)) {
-      // First try to archive the existing build
+      // First try to archive the existing build.
       require_once dirname(__FILE__) . '/includes/kraftwagen.archive.inc';
       if (is_dir($root . DIRECTORY_SEPARATOR . $dir_build)) {
         $archive_dest = kraftwagen_archive_directory($dir_build, $root . DIRECTORY_SEPARATOR . $dir_build);
@@ -54,4 +54,3 @@ function drush_kraftwagen_kw_activate_build($build) {
   symlink($build, $root . DIRECTORY_SEPARATOR . $dir_build);
   drush_log(dt('Symlink created from !link to !target.', array('!link' => $root . DIRECTORY_SEPARATOR . $dir_build, '!target' => $build)), 'success');
 }
-

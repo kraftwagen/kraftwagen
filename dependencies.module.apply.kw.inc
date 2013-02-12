@@ -21,7 +21,7 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   system_get_files_database($modules, 'module');
   system_update_files_database($modules, 'module');
 
-  // Inject enviroment specific dependencies into the dependencies
+  // Inject enviroment specific dependencies into the dependencies.
   foreach ($modules as $key => $module) {
     if (!empty($module->info['env_dependencies'][$environment])) {
       foreach ($module->info['env_dependencies'][$environment] as $dependency) {
@@ -33,7 +33,7 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   // Resolve dependencies and find out in which order to install modules.
   $files = _module_build_dependencies($modules);
 
-  // Get the active profile name
+  // Get the active profile name.
   $profile = drupal_get_profile();
 
   // If we can't gather data about the install profile, we can't do anything.

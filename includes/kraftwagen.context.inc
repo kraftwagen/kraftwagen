@@ -6,10 +6,10 @@
  * context.
  */
 
-// Name of the Kraftwagen configuration file
+// Name of the Kraftwagen configuration file.
 define('KRAFTWAGEN_RC', 'kraftwagenrc.php');
 
-// Prefix of all Kraftwagen configuration values
+// Prefix of all Kraftwagen configuration values.
 define('KRAFTWAGEN_PREFIX', 'kw-');
 
 // Drush context names where Kraftwagen context values should be stored.
@@ -83,7 +83,7 @@ function kraftwagen_context_find_kraftwagen_root($target) {
     $prev_dir = $dir;
     $dir = dirname($dir);
 
-    // If we are at the root. dirname('/') == '/'
+    // If we are at the root. dirname('/') == '/'.
     if ($dir == $prev_dir) {
       return FALSE;
     }
@@ -339,7 +339,7 @@ function kraftwagen_context_restore_config() {
     }
   }
 
-  // Empty the storage
+  // Empty the storage.
   _kraftwagen_context_config_store(FALSE);
 }
 

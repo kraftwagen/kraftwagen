@@ -7,12 +7,17 @@
 
 // Directory names:
 $dirs = array(
-  'src', 'tools', 'build', 'cnf', // default dirs for normal development
-  'builds', // directory to keep track of all builds, for production and staging
-  'archive', // directory to save, for example, old make files
+  // Default dirs for normal development;
+  'src', 'tools', 'build', 'cnf', 
+  // Directory to keep track of all builds, for production and staging:
+  'builds', 
+  // Directory to save, for example, old make files:
+  'archive', 
 
-  'src-tools', // tools directory in the src
-  'src-cnf', // cnf directory in the src
+  // Tools directory in the src:
+  'src-tools',
+  // Cnf directory in the src:
+  'src-cnf', 
 );
 foreach ($dirs as $dir) {
   $options["{$dir}-dir"] = current(array_reverse(explode('-', $dir)));
@@ -25,7 +30,8 @@ $options += array(
   'date-pattern' => 'Ymd-His',
   'file-hashing-function' => 'sha1_file',
 
-  'environment-default' => 'production', // default environment is production for safety reasons
+  // Default environment is production for safety reasons.
+  'environment-default' => 'production', 
   'environment-file' => 'environment',
 
   'settings-file' => 'settings.php',
@@ -35,7 +41,7 @@ $options += array(
 );
 
 // Default way to find the Kraftwagen root directory is checking for the
-// existance of the src-dir
+// existance of the src-dir.
 $options['root-checks'] = array(
   array(
     'type' => 'require_directory',
@@ -53,10 +59,14 @@ $options['build-commands'] = array(
 );
 
 $options['update-commands'] = array(
-  'kw-apply-module-dependencies' => array('*environment*'), // make sure all required modules are enabled
-  'updatedb' => array('--yes'), // run all hook_update_N implementation of enabled modules
-  'features-revert-all' => array('--yes'), // make sure all feature definitions are applied
-  'kw-manifests' => array('*environment*', '--yes'), // run all manifests of all enabled modules
+  // Make sure all required modules are enabled.
+  'kw-apply-module-dependencies' => array('*environment*'), 
+  // Run all hook_update_N implementation of enabled modules.
+  'updatedb' => array('--yes'), 
+  // Make sure all feature definitions are applied.
+  'features-revert-all' => array('--yes'), 
+  // Run all manifests of all enabled modules.
+  'kw-manifests' => array('*environment*', '--yes'), 
 );
 
 $options['setup-commands'] = array(
