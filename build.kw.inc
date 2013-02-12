@@ -51,17 +51,17 @@ function drush_kraftwagen_kw_build() {
  *   always already exist. If no target could be determined, FALSE is returned.
  */
 function kraftwagen_build_determine_target($root) {
-  list($dir_build, $dir_builds, $date_pattern) =
-    kraftwagen_context_get_options('build-dir', 'builds-dir', 'date-pattern');
+  list($dir_build, $dir_builds, $date_pattern) 
+    = kraftwagen_context_get_options('build-dir', 'builds-dir', 'date-pattern');
 
   // Find out where to store the build. Possible locations, order of preference:
   // 1. 'builds' directory. If we have a location where all builds are kept, we
-  //    use this. This will only work when the 'builds' directory already
-  //    exists and a date pattern is available.
+  //  use this. This will only work when the 'builds' directory already exists
+  //  and a date pattern is available.
   // 2. 'build' directory. If we have name for a directory to store a single
-  //    build, use this. This is the default behavior and will succeed in most
-  //    case. If you want to disable this logic, for example in a production
-  //    environment, you should set 'build-dir' to FALSE in kraftwagenrc.php.
+  //  build, use this. This is the default behavior and will succeed in most
+  //  case. If you want to disable this logic, for example in a production
+  //  environment, you should set 'build-dir' to FALSE in kraftwagenrc.php.
   if ($dir_builds && is_dir($root . DIRECTORY_SEPARATOR . $dir_builds) && $date_pattern) {
     $date = date($date_pattern, time());
 
@@ -95,13 +95,13 @@ function kraftwagen_build_determine_target($root) {
  * @param string $target_dir
  *   The, maybe existing target dir
  *
- * @return boolean
+ * @return bool
  *   TRUE on success, FALSE on failure
  */
 function kraftwagen_build_manage_existing_target($root, $target_dir) {
   // Jump out if we do not have an existing target.
   if (!is_dir($target_dir)) {
-    return true;
+    return TRUE;
   }
 
   $dir_build = kraftwagen_context_get_option('build-dir');
@@ -124,5 +124,5 @@ function kraftwagen_build_manage_existing_target($root, $target_dir) {
   // Remove the existing build.
   drush_shell_exec('find %s/sites -type d -depth 1 | xargs chmod +w', $target_dir);
   drush_shell_exec('rm -rf %s', $target_dir);
-  return true;
+  return TRUE;
 }

@@ -186,7 +186,7 @@ function kraftwagen_context_check_directory_require_file($dir, $parameters) {
  *
  * @return
  *   The value of the Kraftwagen option, or it is not set the value of $default,
- *   which defaults to null.
+ *   which defaults to NULL.
  */
 function kraftwagen_context_get_option($key, $default = NULL, $context = NULL) {
   return drush_get_option(KRAFTWAGEN_PREFIX . $key, $default, $context);

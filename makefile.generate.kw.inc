@@ -22,7 +22,7 @@ function drush_kw_generate_makefile_init() {
  *   The location of the src directory. Optional. If not specified the location
  *   will be figured out by determining the Kraftwagen root path.
  */
-function drush_kraftwagen_kw_generate_makefile($location, $src_dir = null) {
+function drush_kraftwagen_kw_generate_makefile($location, $src_dir = NULL) {
   if (!$src_dir) {
     // Find out where the Kraftwagen root is.
     $root = kraftwagen_context_get_option('root-path');

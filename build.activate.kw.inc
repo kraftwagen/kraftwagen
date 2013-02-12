@@ -16,7 +16,7 @@ function drush_kw_activate_build_init() {
 /**
  * Implements drush_COMMAND() for `drush kw-activate-build`.
  *
- * @param $build string
+ * @param string $build
  *   The location of the build to be activated.
  */
 function drush_kraftwagen_kw_activate_build($build) {

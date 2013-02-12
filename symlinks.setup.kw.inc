@@ -20,7 +20,7 @@ function drush_kw_setup_symlink_init() {
  *   Optional. The location of the build where the symlinks should be created
  *   in.
  */
-function drush_kraftwagen_kw_setup_symlinks($build = null) {
+function drush_kraftwagen_kw_setup_symlinks($build = NULL) {
   // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
 

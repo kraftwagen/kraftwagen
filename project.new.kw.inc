@@ -13,7 +13,7 @@
  *   Directory where to create the new project. Optional. Defaults to the 
  *   current working directory.
  */
-function drush_kraftwagen_kw_new_project($dir = null) {
+function drush_kraftwagen_kw_new_project($dir = NULL) {
   $dir = realpath($dir ? $dir : getcwd());
 
   // If the dir has a kraftwagenrc file, we should load it.
@@ -123,7 +123,7 @@ function _kraftwagen_validate_name($name) {
  *   The text which is displayed to the user.
  * @param string $default
  *   Optional. The default value of the input.
- * @param boolean $required
+ * @param bool $required
  *   Optional. If TRUE, user may continue even when no value is in the input.
  * @param string $validate_callback
  *   Optional. The callback to call to check if the input is valid.
