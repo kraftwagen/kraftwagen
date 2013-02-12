@@ -8,6 +8,9 @@
 
 /**
  * Implements drush_COMMAND() for `drush kw-update-makefile`.
+ * 
+ * @param string $location
+ *   The location of the make file to be updated.
  */
 function drush_kraftwagen_kw_update_makefile($makefile) {
   require_once dirname(__FILE__) . '/includes/kraftwagen.info_files.inc';
@@ -41,10 +44,10 @@ function drush_kraftwagen_kw_update_makefile($makefile) {
 /**
  * Reads a makefile for projects and updates the versions.
  *
- * @param $info
+ * @param array $info
  *   The make file info array
  *
- * @return
+ * @return array
  *   The updated info array
  */
 function kraftwagen_update_projects($info) {

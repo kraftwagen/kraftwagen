@@ -27,7 +27,7 @@ function drush_kraftwagen_kw_import_translations() {
 }
 
 /**
- * Constructs the batch using the locale functionality in Drupal
+ * Constructs the batch using the locale functionality in Drupal.
  */
 function kraftwagen_import_translations_batch() {
   $files = array();

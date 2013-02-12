@@ -15,6 +15,10 @@ function drush_kw_setup_symlink_init() {
 
 /**
  * Implements drush_COMMAND for `drush kw-setup-symlinks`.
+ * 
+ * @param string $build
+ *   Optional. The location of the build where the symlinks should be created
+ *   in.
  */
 function drush_kraftwagen_kw_setup_symlinks($build = null) {
   // Find out where the Kraftwagen root is.

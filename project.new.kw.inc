@@ -8,6 +8,10 @@
 
 /**
  * Implements drush_COMMAND for `drush kw-new-project`.
+ * 
+ * @param string $dir
+ *   Directory where to create the new project. Optional. Defaults to the 
+ *   current working directory.
  */
 function drush_kraftwagen_kw_new_project($dir = null) {
   $dir = realpath($dir ? $dir : getcwd());
@@ -79,10 +83,10 @@ function drush_kraftwagen_kw_new_project($dir = null) {
 /**
  * Internal helper function. Create a system name from a human readable name.
  *
- * @param $label
+ * @param string $label
  *   A human readable project name
  *
- * @return
+ * @return string
  *   The project name converted to a allowed system name
  */
 function _kraftwagen_generate_name($label) {
@@ -95,7 +99,7 @@ function _kraftwagen_generate_name($label) {
 /**
  * Interal helper function. Check if a given name is a valid system name.
  *
- * @param $name
+ * @param string $name
  *   The name to validate
  *
  * @return
@@ -115,16 +119,16 @@ function _kraftwagen_validate_name($name) {
  * Internal helper function. Wrapper around drush_prompt that runs the input
  * through a validate callback.
  *
- * @param $prompt
+ * @param string $prompt
  *   The text which is displayed to the user.
- * @param $default
+ * @param string $default
  *   Optional. The default value of the input.
- * @param $required
+ * @param boolean $required
  *   Optional. If TRUE, user may continue even when no value is in the input.
- * @param $validate_callback
+ * @param string $validate_callback
  *   Optional. The callback to call to check if the input is valid.
  *
- * @return
+ * @return string
  *   The user input, after being validated.
  */
 function _kraftwagen_drush_prompt_validate($prompt, $default = NULL, $required = TRUE, $validate_callback = NULL) {
@@ -147,14 +151,14 @@ function _kraftwagen_drush_prompt_validate($prompt, $default = NULL, $required =
  * Internal helper function. Recursively copy a directory, while replacing
  * strings in file and directory names and in file contents.
  *
- * @param $src_dir
+ * @param string $src_dir
  *   The path to the directory to copy from
- * @param $dest_dir
+ * @param string $dest_dir
  *   The path of the directory to copy to
- * @param $filename_replacements
+ * @param array $filename_replacements
  *   Optional. Associative array of string replacements in file and directory
  *   names.
- * @param $content_replacements
+ * @param array $content_replacements
  *   Optional. Associative array of string replacements in file contents.
  */
 function _kraftwagen_copy_dir($src_dir, $dest_dir, $filename_replacements = array(), $content_replacements = array()) {

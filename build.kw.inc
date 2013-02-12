@@ -43,10 +43,10 @@ function drush_kraftwagen_kw_build() {
 /**
  * Find where to store a build.
  *
- * @param $root
+ * @param string $root
  *   Kraftwagen root path
  *
- * @return
+ * @return string
  *   The path to the directory to store the build in. This directory does not
  *   always already exist. If no target could be determined, FALSE is returned.
  */
@@ -90,12 +90,12 @@ function kraftwagen_build_determine_target($root) {
  * It will check if the target exists, and if it does, it tries to archive it
  * and removes it.
  *
- * @param $root
+ * @param string $root
  *   Kraftwagen root path
- * @param $target_dir
+ * @param string $target_dir
  *   The, maybe existing target dir
  *
- * @return
+ * @return boolean
  *   TRUE on success, FALSE on failure
  */
 function kraftwagen_build_manage_existing_target($root, $target_dir) {

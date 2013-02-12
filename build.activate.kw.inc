@@ -15,6 +15,9 @@ function drush_kw_activate_build_init() {
 
 /**
  * Implements drush_COMMAND() for `drush kw-activate-build`.
+ *
+ * @param $build string
+ *   The location of the build to be activated.
  */
 function drush_kraftwagen_kw_activate_build($build) {
   // Find out where the Kraftwagen root is.

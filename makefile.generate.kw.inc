@@ -13,6 +13,15 @@ function drush_kw_generate_makefile_init() {
   kraftwagen_context_init_kraftwagen_root(FALSE);
 }
 
+/**
+ * Implements drush_COMMAND for `drush kw-generate-makefile`.
+ *
+ * @param string $location
+ *   The location where the make file should be generated.
+ * @param string $src_dir
+ *   The location of the src directory. Optional. If not specified the location
+ *   will be figured out by determining the Kraftwagen root path.
+ */
 function drush_kraftwagen_kw_generate_makefile($location, $src_dir = null) {
   if (!$src_dir) {
     // Find out where the Kraftwagen root is.

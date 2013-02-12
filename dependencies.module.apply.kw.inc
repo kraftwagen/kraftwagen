@@ -8,6 +8,9 @@
 
 /**
  * Implements drush_COMMAND for `drush kw-apply-module-dependencies`.
+ *
+ * @param string $environment
+ *   The name of the environment. Defaults to 'production'.
  */
 function drush_kraftwagen_kw_apply_module_dependencies($environment = 'production') {
   // Enable watchdog printing to show information about enabled, disabled,
