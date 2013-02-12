@@ -51,17 +51,17 @@ function drush_kraftwagen_kw_build() {
  *   always already exist. If no target could be determined, FALSE is returned.
  */
 function kraftwagen_build_determine_target($root) {
-  list($dir_build, $dir_builds, $date_pattern) 
+  list($dir_build, $dir_builds, $date_pattern)
     = kraftwagen_context_get_options('build-dir', 'builds-dir', 'date-pattern');
 
   // Find out where to store the build. Possible locations, order of preference:
   // 1. 'builds' directory. If we have a location where all builds are kept, we
-  //  use this. This will only work when the 'builds' directory already exists
-  //  and a date pattern is available.
+  // use this. This will only work when the 'builds' directory already exists
+  // and a date pattern is available.
   // 2. 'build' directory. If we have name for a directory to store a single
-  //  build, use this. This is the default behavior and will succeed in most
-  //  case. If you want to disable this logic, for example in a production
-  //  environment, you should set 'build-dir' to FALSE in kraftwagenrc.php.
+  // build, use this. This is the default behavior and will succeed in most
+  // case. If you want to disable this logic, for example in a production
+  // environment, you should set 'build-dir' to FALSE in kraftwagenrc.php.
   if ($dir_builds && is_dir($root . DIRECTORY_SEPARATOR . $dir_builds) && $date_pattern) {
     $date = date($date_pattern, time());
 
