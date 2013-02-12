@@ -2,26 +2,26 @@
 
 /**
  * @file
- * This file contains the functions that we need to manage the Kraftwagen 
+ * This file contains the functions that we need to manage the Kraftwagen
  * context.
  */
 
 // Name of the Kraftwagen configuration file
-define('KRAFTWAGEN_RC', 'kraftwagenrc.php'); 
+define('KRAFTWAGEN_RC', 'kraftwagenrc.php');
 
 // Prefix of all Kraftwagen configuration values
 define('KRAFTWAGEN_PREFIX', 'kw-');
 
-// Drush context names where Kraftwagen context values should be stored. 
-// 'default' is actually intended for the way we use it, but 'user' is not. 
+// Drush context names where Kraftwagen context values should be stored.
+// 'default' is actually intended for the way we use it, but 'user' is not.
 // Because the context array of drush is not extendable, and we need to load our
-// values somewhere, we had to choose from the existing contexts. 
+// values somewhere, we had to choose from the existing contexts.
 // We needed a place that overrides the values in ~/.drushrc.php, but does not
-// override the values in a Drupal installation. Because ~/.drushrc.php is 
+// override the values in a Drupal installation. Because ~/.drushrc.php is
 // already loaded into 'user' before we load a kraftwagenrc.php, we can savely
 // store our values in the 'user' context.
-define('KRAFTWAGEN_CONTEXT_DEFAULT', 'default'); 
-define('KRAFTWAGEN_CONTEXT_ROOT', 'user'); 
+define('KRAFTWAGEN_CONTEXT_DEFAULT', 'default');
+define('KRAFTWAGEN_CONTEXT_ROOT', 'user');
 define('KRAFTWAGEN_CONTEXT_RUNTIME', 'process');
 
 /**
@@ -36,7 +36,7 @@ function kraftwagen_context_load_default_config() {
 }
 
 /**
- * Initialize the Kraftwagen root and load the kraftwagenrc.php file in it, if it 
+ * Initialize the Kraftwagen root and load the kraftwagenrc.php file in it, if it
  * exists.
  */
 function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
@@ -57,7 +57,7 @@ function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
 /**
  * Traverse upwards in the directory tree to find a Kraftwagen working directory.
  *
- * @param $target 
+ * @param $target
  *   Path to start the traversal
  * @return
  *   The path of the Kraftwagen root, or FALSE if no root is found.
@@ -93,7 +93,7 @@ function kraftwagen_context_find_kraftwagen_root($target) {
 }
 
 /**
- * Internal helper function. preg_replace callback to replace for example 
+ * Internal helper function. preg_replace callback to replace for example
  * '*src_dir*' with the expected path of the source dir from Kraftwagen context
  * options.
  */
@@ -107,11 +107,11 @@ function _kraftwagen_context_check_directory_replace($matches) {
  *
  * @param $path
  *   The path to check for
- * @return 
+ * @return
  *   TRUE if the path is Kraftwagen root directory, FALSE if not.
  */
 function kraftwagen_context_check_directory($path) {
-  // Check if a kraftwagen.rc file is in the directory. If it is, load it 
+  // Check if a kraftwagen.rc file is in the directory. If it is, load it
   // temporarily.
   $rc_file = FALSE;
   if (is_file($path . '/' . KRAFTWAGEN_RC)) {
@@ -169,19 +169,19 @@ function kraftwagen_context_check_directory_require_file($dir, $parameters) {
   return is_file($dir . '/' . $parameters['file']);
 }
 
-/** 
+/**
  * Get the value of Kraftwagen option.
  *
  * A fairly simple but very convenient wrapper around drush_get_option().
- * 
+ *
  * @param $key
  *   The name of the Kraftwagen option to get
  * @param $default
  *   Optional. The value to return if the option has not been set
  * @param $context
- *   Optional. The context to check for the option. If this is set, only this 
+ *   Optional. The context to check for the option. If this is set, only this
  *   context will be searched.
- * 
+ *
  * @return
  *   The value of the Kraftwagen option, or it is not set the value of $default,
  *   which defaults to null.
@@ -192,13 +192,13 @@ function kraftwagen_context_get_option($key, $default = NULL, $context = NULL) {
 
 /**
  * Get the values of one or more kraftwagen options.
- * 
+ *
  * @param $key1
  * @param $key2
  * @param ...
  *   The Kraftwagen options to get.
- * 
- * @return 
+ *
+ * @return
  *   Array with the return values for kraftwagen_context_get_option for every
  *   option.
  */
@@ -280,16 +280,16 @@ function kraftwagen_context_get_config_options() {
 
 /**
  * Temporarily load Kraftwagen config file
- * 
+ *
  * This allows for loading a config file while searching the Kraftwagen root. It
  * makes it possible to load a config file, using the values from the config
- * file with all the normal functions for accessing config values and then 
+ * file with all the normal functions for accessing config values and then
  * settings the config values back to the values they had before loading in the
- * config file. 
+ * config file.
  *
- * @param $config 
+ * @param $config
  *   The config file to load.
- * 
+ *
  * @return
  *   On error FALSE, otherwise TRUE.
  */
@@ -345,7 +345,7 @@ function kraftwagen_context_restore_config() {
 
 /**
  * Interal helper function. Get all Kraftwagen config options per context.
- * 
+ *
  * @return
  *   Associative array, per context an associative array of Kraftwagen options.
  */
@@ -377,12 +377,12 @@ function _kraftwagen_context_config_store($data = NULL) {
 }
 
 /**
- * Wrapper around drush_confirm that does not ask the question if the a 
+ * Wrapper around drush_confirm that does not ask the question if the a
  * Kraftwagen option is set.
- * 
+ *
  * @param $option
  *   The Kraftwagen option that can be used as default value.
- * @param $msg 
+ * @param $msg
  *   The question to ask
  */
 function kraftwagen_context_confirm($option, $msg) {

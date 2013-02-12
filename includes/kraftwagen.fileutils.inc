@@ -7,7 +7,7 @@
 
 /**
  * Check if two files are equal.
- * 
+ *
  * @param $a
  *   Filename of the first file
  * @param $b
@@ -22,7 +22,7 @@ function kraftwagen_compare_files($a, $b) {
 }
 
 /**
- * Perform a find and replace in a file and write the result to some other file. 
+ * Perform a find and replace in a file and write the result to some other file.
  * We use this to execute replacement patterns in skeleton and template files.
  *
  * @param $original_filepath

@@ -10,7 +10,7 @@
  * Implements drush_COMMAND for `drush kw-apply-module-dependencies`.
  */
 function drush_kraftwagen_kw_apply_module_dependencies($environment = 'production') {
-  // Enable watchdog printing to show information about enabled, disabled, 
+  // Enable watchdog printing to show information about enabled, disabled,
   // installed and uninstalled modules.
   drush_set_option('watchdog', 'print');
 
@@ -41,13 +41,13 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
     return drush_set_error(dt('Could not find dependencies for profile !profile.', array('!profile' => $profile)));
   }
 
-  // To find the required modules we need to clear the required flag on the 
+  // To find the required modules we need to clear the required flag on the
   // profile, because otherwise all modules that need to be enabled are called
   // required. Required is reserved for base modules for Drupal.
   $files[$profile]->info['required'] = FALSE;
 
   // Find the 'required' modules
-  // Noteworthy fact when debugging: the field module markes modules that are 
+  // Noteworthy fact when debugging: the field module markes modules that are
   // used by existing fields as 'required'.
   $required = array();
   foreach ($files as $name => $info) {

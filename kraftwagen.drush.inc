@@ -12,7 +12,7 @@
 function kraftwagen_drush_command() {
   $items = array();
 
-  $items['kw-new-project'] = array( 
+  $items['kw-new-project'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Create a new project. This will create an new source directory from a Git skeleton repository.'),
     'arguments' => array(
@@ -50,7 +50,7 @@ function kraftwagen_drush_command() {
     'required-arguments' => 1,
   );
 
-  $items['kw-update-makefile'] = array( 
+  $items['kw-update-makefile'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Update an existing makefile to the newest version of contributed modules. This will NOT do any major updates.'),
     'arguments' => array(
@@ -61,13 +61,13 @@ function kraftwagen_drush_command() {
     'aliases' => array('kw-um'),
   );
 
-  $items['kw-update'] = array( 
+  $items['kw-update'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
     'description' => dt('Update a Kraftwagen project. Runs all commands necessary to bring the database in sync with code in the build.'),
     'aliases' => array('kw-u'),
   );
 
-  $items['kw-apply-module-dependencies'] = array( 
+  $items['kw-apply-module-dependencies'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
     'description' => dt('Check if all required modules are enabled, enable them if they are not, and disable them if the are enabled, but not required.'),
     'arguments' => array(

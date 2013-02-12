@@ -19,13 +19,13 @@ function drush_kw_setup_symlink_init() {
 function drush_kraftwagen_kw_setup_symlink($build, $name) {
   // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
-  
+
   if (!@lstat($build)) {
     return drush_set_error(dt('No build found at !path', array('!path' => $build)));
   }
 
   if (!($dir_drupal_config = kraftwagen_context_get_option('drupal-config-dir'))) {
-    return drush_set_error(dt('No drupal config dir name set.')); 
+    return drush_set_error(dt('No drupal config dir name set.'));
   }
 
   if (!@lstat($build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config)) {
@@ -39,7 +39,7 @@ function drush_kraftwagen_kw_setup_symlink($build, $name) {
   }
 
   if (!($dir_cnf = kraftwagen_context_get_option('cnf-dir'))) {
-    return drush_set_error(dt('No cnf dir name set.')); 
+    return drush_set_error(dt('No cnf dir name set.'));
   }
 
   if (!@lstat($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name)) {

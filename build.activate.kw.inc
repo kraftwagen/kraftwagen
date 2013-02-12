@@ -2,7 +2,7 @@
 
 /**
  * @file
- * This file contains the functions that are required to execute 
+ * This file contains the functions that are required to execute
  * `drush kw-activate-build`.
  */
 
@@ -30,8 +30,8 @@ function drush_kraftwagen_kw_activate_build($build) {
 
   // If base build is non-existant
   // @TODO: Find out if there is a better way then !@lstat() to check if a
-  // path is not taken. lstat is probably a pretty IO intensive operation, 
-  // while the required information is actually very simple. 
+  // path is not taken. lstat is probably a pretty IO intensive operation,
+  // while the required information is actually very simple.
   if (@lstat($root . DIRECTORY_SEPARATOR . $dir_build)) {
     if (!is_link($root . DIRECTORY_SEPARATOR . $dir_build)) {
       // First try to archive the existing build

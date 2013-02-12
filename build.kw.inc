@@ -2,7 +2,7 @@
 
 /**
  * @file
- * This file contains the functions that are required to execute 
+ * This file contains the functions that are required to execute
  * `drush kw-build`.
  */
 
@@ -46,17 +46,17 @@ function drush_kraftwagen_kw_build() {
  * @param $root
  *   Kraftwagen root path
  *
- * @return 
- *   The path to the directory to store the build in. This directory does not 
+ * @return
+ *   The path to the directory to store the build in. This directory does not
  *   always already exist. If no target could be determined, FALSE is returned.
  */
 function kraftwagen_build_determine_target($root) {
-  list($dir_build, $dir_builds, $date_pattern) = 
+  list($dir_build, $dir_builds, $date_pattern) =
     kraftwagen_context_get_options('build-dir', 'builds-dir', 'date-pattern');
 
   // Find out where to store the build. Possible locations, order of preference:
   // 1. 'builds' directory. If we have a location where all builds are kept, we
-  //    use this. This will only work when the 'builds' directory already 
+  //    use this. This will only work when the 'builds' directory already
   //    exists and a date pattern is available.
   // 2. 'build' directory. If we have name for a directory to store a single
   //    build, use this. This is the default behavior and will succeed in most
@@ -87,15 +87,15 @@ function kraftwagen_build_determine_target($root) {
 /**
  * Remove and optionally archive an existing build target.
  *
- * It will check if the target exists, and if it does, it tries to archive it 
+ * It will check if the target exists, and if it does, it tries to archive it
  * and removes it.
- * 
+ *
  * @param $root
  *   Kraftwagen root path
  * @param $target_dir
  *   The, maybe existing target dir
  *
- * @return 
+ * @return
  *   TRUE on success, FALSE on failure
  */
 function kraftwagen_build_manage_existing_target($root, $target_dir) {

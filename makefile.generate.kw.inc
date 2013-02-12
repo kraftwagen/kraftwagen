@@ -2,7 +2,7 @@
 
 /**
  * @file
- * This file contains the functions that are required to execute 
+ * This file contains the functions that are required to execute
  * `drush kw-generate-makefile`.
  */
 
@@ -19,7 +19,7 @@ function drush_kraftwagen_kw_generate_makefile($location, $src_dir = null) {
     $root = kraftwagen_context_get_option('root-path');
 
     if (!($dir_src = kraftwagen_context_get_option('src-dir'))) {
-      return drush_set_error(dt('No src dir name set.')); 
+      return drush_set_error(dt('No src dir name set.'));
     }
 
     if (!@lstat($root . DIRECTORY_SEPARATOR . $dir_src)) {
@@ -30,11 +30,11 @@ function drush_kraftwagen_kw_generate_makefile($location, $src_dir = null) {
   }
 
   if (!($dir_src_tools = kraftwagen_context_get_option('src-tools-dir'))) {
-    return drush_set_error(dt('No src tools subdir name set.')); 
+    return drush_set_error(dt('No src tools subdir name set.'));
   }
 
   if (!($file_make_tpl = kraftwagen_context_get_option('make-file-tpl'))) {
-    return drush_set_error(dt('No make file name set.')); 
+    return drush_set_error(dt('No make file name set.'));
   }
 
   if (!is_file($src_dir . DIRECTORY_SEPARATOR . $dir_src_tools . DIRECTORY_SEPARATOR . $file_make_tpl)) {

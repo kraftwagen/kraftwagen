@@ -22,7 +22,7 @@ function drush_kraftwagen_kw_setup_symlinks($build = null) {
 
   if (!isset($build)) {
     if (!($dir_build = kraftwagen_context_get_option('build-dir'))) {
-      return drush_set_error(dt('No build dir name set.')); 
+      return drush_set_error(dt('No build dir name set.'));
     }
 
     $build = $root . DIRECTORY_SEPARATOR . $dir_build;

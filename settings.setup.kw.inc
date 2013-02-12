@@ -22,7 +22,7 @@ function drush_kraftwagen_kw_setup_settings() {
 
   // Determine config directory.
   if (!($dir_cnf = kraftwagen_context_get_option('cnf-dir'))) {
-    return drush_set_error(dt('No cnf dir name set.')); 
+    return drush_set_error(dt('No cnf dir name set.'));
   }
 
   if (!is_dir($root . DIRECTORY_SEPARATOR . $dir_cnf)) {

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * This file contains the functions that are required to execute 
+ * This file contains the functions that are required to execute
  * `drush kw-update`.
  */
 
@@ -22,7 +22,7 @@ function drush_kraftwagen_kw_update() {
 
   // Determine config directory.
   if (!($dir_cnf = kraftwagen_context_get_option('cnf-dir'))) {
-    return drush_set_error(dt('No cnf dir name set.')); 
+    return drush_set_error(dt('No cnf dir name set.'));
   }
   if (!($file_environment = kraftwagen_context_get_option('environment-file'))) {
     return drush_set_error(dt('No environment file set.'));

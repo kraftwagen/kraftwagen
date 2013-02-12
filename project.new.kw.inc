@@ -23,26 +23,26 @@ function drush_kraftwagen_kw_new_project($dir = null) {
     drush_log(dt('The directory !dir already exists. Use --force if you really want Kraftwagen to overwrite files in this directory.', array('!dir' => $dir_src)), 'error');
     return;
   }
-  
+
   // Ask for the human readable name of the project. This can be used for the
   // name property of the install profile. Defaults to the name of the current
   // directory.
   $project_label = drush_prompt(dt('Enter the human readable name of the project'), basename($dir));
-  
+
   // Create machine name for the project. This defaults to a simplified version
   // of the human readable name. This is used for the file names.
   $project_name = _kraftwagen_drush_prompt_validate(
-    dt('Enter the internal machine name of the project'), 
+    dt('Enter the internal machine name of the project'),
     _kraftwagen_generate_name($project_label), TRUE, '_kraftwagen_validate_name'
   );
-  
+
   // Ask for the location of the git repository that contains the skeleton.
   $skeleton = drush_prompt(dt('Enter the location of the skeleton repository'));
   $branch = drush_prompt(dt('Enter the name of the branch to use [source repository HEAD]'), NULL, FALSE);
 
   // Create a tempdir where we are going to clone the repository in.
   $tempdir = drush_tempdir();
-  
+
   // Clone the skeleton repository.
   if ($branch) {
     $args = array('git clone -b %s %s %s', $branch, $skeleton, $tempdir);
@@ -55,15 +55,15 @@ function drush_kraftwagen_kw_new_project($dir = null) {
       drush_shell_exec("rm -rf %s", $tempdir . '/.git');
     }
 
-    // Make sure we have a src directory. This is going to contain the whole 
+    // Make sure we have a src directory. This is going to contain the whole
     // actual source of the project.
     drush_mkdir($dir . DIRECTORY_SEPARATOR . $dir_src);
-    
-    _kraftwagen_copy_dir($tempdir, $dir . DIRECTORY_SEPARATOR . $dir_src, 
+
+    _kraftwagen_copy_dir($tempdir, $dir . DIRECTORY_SEPARATOR . $dir_src,
       array('SKELETON' => $project_name),
       array(
-        '***MACHINE_NAME***' => $project_name, 
-        '***HUMAN_NAME***' => $project_label, 
+        '***MACHINE_NAME***' => $project_name,
+        '***HUMAN_NAME***' => $project_label,
         '***HUMAN_NAME_ESCAPED***' => addslashes($project_label)
       )
     );
@@ -79,13 +79,13 @@ function drush_kraftwagen_kw_new_project($dir = null) {
  *
  * @param $label
  *   A human readable project name
- * 
+ *
  * @return
  *   The project name converted to a allowed system name
  */
 function _kraftwagen_generate_name($label) {
-  // Convert to lowercase, replace every non-alphanumeric character with an 
-  // underscore, replace all repeating underscores with a single underscore, 
+  // Convert to lowercase, replace every non-alphanumeric character with an
+  // underscore, replace all repeating underscores with a single underscore,
   // make sure that the name does not start with a number.
   return preg_replace('/^([0-9])/','_\1', preg_replace('/_+/','_', preg_replace('/[^a-z0-9]/', '_', strtolower($label))));
 }
@@ -101,7 +101,7 @@ function _kraftwagen_generate_name($label) {
  */
 function _kraftwagen_validate_name($name) {
   // Make sure it consists only of alphanumeric characters and underscores and
-  // does not start with a number. 
+  // does not start with a number.
   if (!preg_match('/^[a-z_][a-z0-9_]*$/', $name)) {
     return drush_set_error(dt('Only lowercase alphanumeric characters and underscores are allowed. The input cannot start with a number.'));
   }
@@ -110,7 +110,7 @@ function _kraftwagen_validate_name($name) {
 }
 
 /**
- * Internal helper function. Wrapper around drush_prompt that runs the input 
+ * Internal helper function. Wrapper around drush_prompt that runs the input
  * through a validate callback.
  *
  * @param $prompt
@@ -121,14 +121,14 @@ function _kraftwagen_validate_name($name) {
  *   Optional. If TRUE, user may continue even when no value is in the input.
  * @param $validate_callback
  *   Optional. The callback to call to check if the input is valid.
- * 
+ *
  * @return
  *   The user input, after being validated.
  */
 function _kraftwagen_drush_prompt_validate($prompt, $default = NULL, $required = TRUE, $validate_callback = NULL) {
   while (TRUE) {
     $result = drush_prompt($prompt, $default, $required);
-    
+
     // Assume that the default is a valid result.
     if ($result == $default) {
       return $result;
@@ -142,7 +142,7 @@ function _kraftwagen_drush_prompt_validate($prompt, $default = NULL, $required =
 }
 
 /**
- * Internal helper function. Recursively copy a directory, while replacing 
+ * Internal helper function. Recursively copy a directory, while replacing
  * strings in file and directory names and in file contents.
  *
  * @param $src_dir
@@ -150,7 +150,7 @@ function _kraftwagen_drush_prompt_validate($prompt, $default = NULL, $required =
  * @param $dest_dir
  *   The path of the directory to copy to
  * @param $filename_replacements
- *   Optional. Associative array of string replacements in file and directory 
+ *   Optional. Associative array of string replacements in file and directory
  *   names.
  * @param $content_replacements
  *   Optional. Associative array of string replacements in file contents.
@@ -162,14 +162,14 @@ function _kraftwagen_copy_dir($src_dir, $dest_dir, $filename_replacements = arra
 
   // Make sure the kraftwagen_file_replace function is available.
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
-  
+
   // Loop over the files. $file starts with a slash.
   foreach ($files as $file) {
     // Create the full path of the file in the src_dir.
     $src_path = $src_dir . $file;
     // Create the full path that the file should get in the working directory.
     $dest_path = $dest_dir . (!empty($filename_replacements) ? str_replace(array_keys($filename_replacements), array_values($filename_replacements), $file) : $file);
-    
+
     if (is_dir($src_path)) {
       drush_mkdir($dest_path);
     } else {

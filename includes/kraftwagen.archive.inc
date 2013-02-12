@@ -4,7 +4,7 @@ function kraftwagen_archive_prepare_location($name, $path) {
   $root = kraftwagen_context_get_option('root-path');
 
   $dir_archive = kraftwagen_context_get_option('archive-dir');
-  
+
   if (!$dir_archive) {
     return drush_set_error(dt('Could not archive !name from !path, because we could find the archive directory.', array('!name' => $name, '!path' => $path)));
   }
@@ -29,7 +29,7 @@ function kraftwagen_archive_prepare_location($name, $path) {
 
     if (!drush_mkdir($root . DIRECTORY_SEPARATOR . $dir_archive . DIRECTORY_SEPARATOR . $name)) {
       return drush_set_error(dt('Could not archive !name from !path, because the directory !dir could not be created.', array('!name' => $name, '!path' => $path, '!dir' => $root . DIRECTORY_SEPARATOR . $dir_archive . DIRECTORY_SEPARATOR . $name)));
-    } 
+    }
 
     // Notice, usually not visible
     drush_log(dt('Directory !dir created to archive !name.', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_archive . DIRECTORY_SEPARATOR . $name, '!name' => $name)));

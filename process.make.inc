@@ -2,13 +2,13 @@
 
 /**
  * @file
- * This file provides an extension to `drush make-process`, a subcommand 
- * of `drush make`. 
+ * This file provides an extension to `drush make-process`, a subcommand
+ * of `drush make`.
  */
 
 /**
- * Implements make_download_DOWNLOAD_TYPE() for 'kraftwagen_directory'. 
- * This allows building directly from the filesystem, instead of from a 
+ * Implements make_download_DOWNLOAD_TYPE() for 'kraftwagen_directory'.
+ * This allows building directly from the filesystem, instead of from a
  * repository.
  */
 function make_download_kraftwagen_directory($name, $download, $download_location) {

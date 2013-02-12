@@ -2,7 +2,7 @@
 
 /**
  * @file
- * This file contains the functions that are required to execute 
+ * This file contains the functions that are required to execute
  * `drush kw-update-makefile`.
  */
 
@@ -20,30 +20,30 @@ function drush_kraftwagen_kw_update_makefile($makefile) {
   if (($info = make_validate_info_file($info)) === FALSE) {
     return drush_set_error(dt('Could not validate make file !makefile', array('!makefile' => $makefile)));
   }
-  
+
   // Get updated version of the info.
   $info_updated = kraftwagen_update_projects($info);
-  
+
   if ($info === $info_updated) {
     drush_log(dt('There are no changes to the makefile, so we did not write a new version.'), 'ok');
     return;
   }
-  
+
   // Generate makefile from info.
   $data = kraftwagen_generate_info_file($info_updated);
-  
+
   // Write data to file.
   file_put_contents($makefile, $data);
-  
+
   drush_log(dt('The changes have been written to the makefile.'), 'ok');
 }
 
 /**
  * Reads a makefile for projects and updates the versions.
- * 
+ *
  * @param $info
  *   The make file info array
- * 
+ *
  * @return
  *   The updated info array
  */
@@ -60,7 +60,7 @@ function kraftwagen_update_projects($info) {
       drush_log(dt('No version specified for project !project. This can lead to unintended upgrades.', array('!project' => $project_name)), 'warning');
       continue; // don't try to determine a better version
     }
-    
+
     // Projects with just a major version specified are theoretically a smaller
     // risk, but should still be avoided.
     $exploded_version = explode('.', $project['version']);
@@ -68,11 +68,11 @@ function kraftwagen_update_projects($info) {
       drush_log(dt('Only a major version specified for project !project. This can lead to unintended upgrades.', array('!project' => $project_name)), 'warning');
       continue; // don't try to determine a better version
     }
-    
+
     // Get major version.
     $major = $exploded_version[0];
-    
-    // Create a new project array that is suitable to pass into 
+
+    // Create a new project array that is suitable to pass into
     // release_info_fetch.
     $request = array(
       'name'     => $project_name,
@@ -80,15 +80,15 @@ function kraftwagen_update_projects($info) {
       'drupal_version' => $info['core'],
       'status url' => drush_get_option('make-update-default-url', RELEASE_INFO_DEFAULT_URL),
     );
-    
+
     // Try to retrieve project data from drupal.org.
     if (!($project_data_retrieved = release_info_fetch($request)) || $project_data_retrieved === $project_data) {
-      // If no data is retrieved, this project is probably not updatable via 
+      // If no data is retrieved, this project is probably not updatable via
       // drupal.org.
       drush_log(dt('Project !project could not be found and was not updated'), array('!project' => $project_name), 'warning');
       continue;
     }
-    
+
     // Only update to the new version if the suggested version is actually newer
     // than our currently specified version.
     if (version_compare($project_data_retrieved['version'], $project['version'], '>')) {
@@ -98,6 +98,6 @@ function kraftwagen_update_projects($info) {
       drush_log(dt('Project !project has not been upgraded because it already is at the latest version.', array('!project' => $project_name, '!version' => $project['version'])), 'ok');
     }
   }
-  
+
   return $info;
 }

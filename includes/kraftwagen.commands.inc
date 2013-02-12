@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Run a sequence of drush commands that are defined in Kraftwagen context 
+ * Run a sequence of drush commands that are defined in Kraftwagen context
  * option.
  */
 function kraftwagen_commands_sequence_run($option, $replacements = array(), $fail_on_error = TRUE) {
@@ -30,7 +30,7 @@ function kraftwagen_commands_sequence_run_commands($commands, $fail_on_error = T
       _drush_find_commandfiles(DRUSH_BOOTSTRAP_DRUPAL_FULL);
     }
     $available_commands = drush_get_commands();
-    
+
     if (isset($available_commands[$command])) {
       $result = drush_invoke_process('@self', $command, $arguments);
       if (!$result || !empty($result['error_status'])) {

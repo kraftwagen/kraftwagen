@@ -14,7 +14,7 @@ $dirs = array(
   'src-tools', // tools directory in the src
   'src-cnf', // cnf directory in the src
 );
-foreach ($dirs as $dir) { 
+foreach ($dirs as $dir) {
   $options["{$dir}-dir"] = current(array_reverse(explode('-', $dir)));
 }
 
@@ -34,7 +34,7 @@ $options += array(
   'drupal-config-dir' => 'default',
 );
 
-// Default way to find the Kraftwagen root directory is checking for the 
+// Default way to find the Kraftwagen root directory is checking for the
 // existance of the src-dir
 $options['root-checks'] = array(
   array(
@@ -55,7 +55,7 @@ $options['build-commands'] = array(
 $options['update-commands'] = array(
   'kw-apply-module-dependencies' => array('*environment*'), // make sure all required modules are enabled
   'updatedb' => array('--yes'), // run all hook_update_N implementation of enabled modules
-  'features-revert-all' => array('--yes'), // make sure all feature definitions are applied 
+  'features-revert-all' => array('--yes'), // make sure all feature definitions are applied
   'kw-manifests' => array('*environment*', '--yes'), // run all manifests of all enabled modules
 );
 
