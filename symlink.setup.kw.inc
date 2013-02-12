@@ -17,7 +17,7 @@ function drush_kw_setup_symlink_init() {
  * Implements drush_COMMAND for `drush kraftwagen-build-symlink`.
  */
 function drush_kraftwagen_kw_setup_symlink($build, $name) {
-  // find out where the Kraftwagen root is
+  // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
   
   if (!@lstat($build)) {

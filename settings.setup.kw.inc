@@ -17,10 +17,10 @@ function drush_kw_setup_settings_init() {
  * Implements drush_COMMAND for `drush kw-setup-settings`.
  */
 function drush_kraftwagen_kw_setup_settings() {
-  // find out where the Kraftwagen root is
+  // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
 
-  // determine config directory
+  // Determine config directory.
   if (!($dir_cnf = kraftwagen_context_get_option('cnf-dir'))) {
     return drush_set_error(dt('No cnf dir name set.')); 
   }

@@ -17,12 +17,12 @@
  *   An assiociative array that represents the file. FALSE on failure.
  */
 function kraftwagen_parse_info_file($makefile) {
-  // get the content of the makefile
+  // Fet the content of the makefile.
   if (!($data = file_get_contents($makefile))) {
     return drush_set_error(dt('Invalid or empty make file: %makefile', array('%makefile' => $makefile)));
   }
   
-  // parse the makefile
+  // Parse the makefile.
   if (!($info = _drush_drupal_parse_info_file($data))) {
     return drush_set_error(dt('Could not parse make file: %makefile', array('%makefile' => $makefile)));
   }
@@ -41,9 +41,9 @@ function kraftwagen_parse_info_file($makefile) {
  */
 function kraftwagen_generate_info_file($info) {
   // TODO: write simplification to create lines like 'projects[drupal] = 7.2' 
-  // instead of 'projects[drupal][version] = 7.2'
+  // instead of 'projects[drupal][version] = 7.2'.
   
-  // fetch the data as an array of lines and implode
+  // Fetch the data as an array of lines and implode.
   return implode("\n", _kraftwagen_generate_info_file($info));
 }
 
@@ -57,21 +57,21 @@ function _kraftwagen_generate_info_file($info, $path = array()) {
   foreach ($info as $key => $value) {
     if (is_array($value)) {
       if (empty($value)) {
-        // create a line like 'projects[] = drupal' for empty property arrays
+        // Create a line like 'projects[] = drupal' for empty property arrays.
         $lines[] = _kraftwagen_generate_info_file_line(array_merge($path, array(NULL)), $key);
       }
       else {
-        // add newlines to keep the file a little readable
+        // Add newlines to keep the file a little readable.
         if (count($path) < 3 && !empty($lines) && $lines[count($lines)-1]) {
           $lines[] = '';
         }
-        // generate lines for the subarray and merge it into our result
+        // Generate lines for the subarray and merge it into our result.
         $lines = array_merge($lines, _kraftwagen_generate_info_file($value, array_merge($path, array($key))));
       }
     } 
     else {
-      // create line like 'projects[drupal][version] = 7.2 for simple scalar 
-      // values
+      // Create line like 'projects[drupal][version] = 7.2 for simple scalar 
+      // values.
       $lines[] = _kraftwagen_generate_info_file_line(array_merge($path, array($key)), $value);
     }
   }
@@ -83,7 +83,7 @@ function _kraftwagen_generate_info_file($info, $path = array()) {
  * Internal function. Generates a makefile line for a path and a value.
  */
 function _kraftwagen_generate_info_file_line($path, $value) {
-  // create key from path
+  // Create key from path.
   $key = _kraftwagen_generate_info_file_key($path);
   
   return "$key = $value";
@@ -96,16 +96,16 @@ function _kraftwagen_generate_info_file_key($path) {
   $key = '';
   foreach ($path as $part) {
     if (empty($key)) {
-      // if key is still empty, we do not need to includes brackets
+      // If key is still empty, we do not need to includes brackets.
       $key = $part;
     } 
     else {
-      // a NULL part is interpreted like [] assignment
+      // A NULL part is interpreted like [] assignment.
       if (is_null($part)) {
         $key .= '[]';
       }
       else {
-        // add part to the key
+        // Add part to the key.
         $key .= '[' . $part . ']';
       }
     }
@@ -113,4 +113,3 @@ function _kraftwagen_generate_info_file_key($path) {
   
   return $key;
 }
-

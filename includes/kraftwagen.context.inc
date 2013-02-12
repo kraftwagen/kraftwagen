@@ -40,10 +40,10 @@ function kraftwagen_context_load_default_config() {
  * exists.
  */
 function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
-  // try to find the root
+  // Try to find the root.
   $root = kraftwagen_context_find_kraftwagen_root(getcwd());
 
-  // if a root is found, initialize it
+  // If a root is found, initialize it.
   if (!empty($root)) {
     kraftwagen_context_set_option('root-path', $root);
     if (file_exists($root . '/' . KRAFTWAGEN_RC)) {
@@ -63,7 +63,7 @@ function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
  *   The path of the Kraftwagen root, or FALSE if no root is found.
  */
 function kraftwagen_context_find_kraftwagen_root($target) {
-  // make sure we have a full and valid directory path to start with
+  // Make sure we have a full and valid directory path to start with.
   $dir = realpath($target);
   if (is_file($dir)) {
     $dir = dirname($dir);
@@ -72,18 +72,18 @@ function kraftwagen_context_find_kraftwagen_root($target) {
     return FALSE;
   }
 
-  // traverse upwards
+  // Traverse upwards.
   while ($dir) {
-    // if the directory is a valid kraftwagen root, return it
+    // If the directory is a valid kraftwagen root, return it.
     if (kraftwagen_context_check_directory($dir)) {
       return $dir;
     }
 
-    // try to find the parent directory
+    // Try to find the parent directory.
     $prev_dir = $dir;
     $dir = dirname($dir);
 
-    // dirname('/') == '/'
+    // If we are at the root. dirname('/') == '/'
     if ($dir == $prev_dir) {
       return FALSE;
     }
@@ -121,7 +121,7 @@ function kraftwagen_context_check_directory($path) {
 
   $return = TRUE;
 
-  // perform the root checks
+  // Perform the root checks.
   $root_checks = kraftwagen_context_get_option('root-checks');
   foreach ($root_checks as $check) {
     $func = 'kraftwagen_context_check_directory_' . $check['type'];
@@ -161,6 +161,7 @@ function kraftwagen_context_check_directory($path) {
 function kraftwagen_context_check_directory_require_directory($dir, $parameters) {
   return is_dir($dir . '/' . $parameters['dir']);
 }
+
 /**
  * Kraftwagen root check callback for 'require_file'. Checks if a file exists.
  */
@@ -239,7 +240,7 @@ function kraftwagen_context_load_config_file($config, $context = KRAFTWAGEN_CONT
     return drush_set_error(dt('Kraftwagen config file !config could not be found.', array('!config' => realpath($config))));
   }
 
-  // fetch options from file
+  // Fetch options from file.
   $options = array();
   drush_log(dt('Loading kraftwagenrc "!config".', array('!config' => realpath($config))), 'kraftwagen');
   $ret = @include($config);
@@ -247,7 +248,7 @@ function kraftwagen_context_load_config_file($config, $context = KRAFTWAGEN_CONT
     return drush_set_error(dt('Kraftwagen config file !config could not be opened.', array('!config' => realpath($config))));
   }
 
-  // load options into context
+  // Load options into context.
   if (!empty($options)) {
     $drush_options = array();
     foreach ($options as $key => $value) {
@@ -295,16 +296,16 @@ function kraftwagen_context_get_config_options() {
 function kraftwagen_context_load_config_file_temp($config) {
   $data = _kraftwagen_context_config_store();
 
-  // refuse to load the file, if another file is currently temporarily loaded
+  // Refuse to load the file, if another file is currently temporarily loaded.
   if ($data !== FALSE) {
     return drush_set_error('kraftwagen', dt('Could not load temporary config file !config, because another temporary config file is currently loaded.', array('!config' => $config)));
   }
 
-  // get the current config data and store it
+  // Get the current config data and store it.
   $data = _kraftwagen_context_get_config_options();
   _kraftwagen_context_config_store($data);
 
-  // load the config file
+  // Load the config file.
   return kraftwagen_context_load_config_file($config);
 }
 
@@ -319,7 +320,7 @@ function kraftwagen_context_restore_config() {
     $cache = &drush_get_context($context);
     if (is_array($cache)) {
 
-      // remove the items that were not present before loading the file
+      // Remove the items that were not present before loading the file.
       $keys = array_keys($cache);
       foreach ($keys as $key) {
         if (substr($key, 0, strlen(KRAFTWAGEN_PREFIX)) == KRAFTWAGEN_PREFIX) {
@@ -329,7 +330,7 @@ function kraftwagen_context_restore_config() {
         }
       }
 
-      // set the values from the storage
+      // Set the values from the storage.
       if (!empty($data[$context])) {
         foreach ($data[$context] as $key => $value) {
           $cache[KRAFTWAGEN_PREFIX . $key] = $value;
@@ -338,7 +339,7 @@ function kraftwagen_context_restore_config() {
     }
   }
 
-  // empty the storage
+  // Empty the storage
   _kraftwagen_context_config_store(FALSE);
 }
 
@@ -385,7 +386,7 @@ function _kraftwagen_context_config_store($data = NULL) {
  *   The question to ask
  */
 function kraftwagen_context_confirm($option, $msg) {
-  // use default value for option
+  // Use default value for option.
   $value = kraftwagen_context_get_option('default-' . $option);
   if (!is_null($value)) {
     return (bool) $value;

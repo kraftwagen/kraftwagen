@@ -5,7 +5,7 @@
  * Kraftwagen settings defaults
  */
 
-// directory names
+// Directory names:
 $dirs = array(
   'src', 'tools', 'build', 'cnf', // default dirs for normal development
   'builds', // directory to keep track of all builds, for production and staging
@@ -18,7 +18,7 @@ foreach ($dirs as $dir) {
   $options["{$dir}-dir"] = current(array_reverse(explode('-', $dir)));
 }
 
-// other settings
+// Other settings:
 $options += array(
   'make-file' => 'build.make',
   'make-file-tpl' => 'build.make.tpl',
@@ -34,7 +34,7 @@ $options += array(
   'drupal-config-dir' => 'default',
 );
 
-// default way to find the Kraftwagen root directory is checking for the 
+// Default way to find the Kraftwagen root directory is checking for the 
 // existance of the src-dir
 $options['root-checks'] = array(
   array(

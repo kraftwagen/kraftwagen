@@ -15,7 +15,7 @@ function drush_kw_generate_makefile_init() {
 
 function drush_kraftwagen_kw_generate_makefile($location, $src_dir = null) {
   if (!$src_dir) {
-    // find out where the Kraftwagen root is
+    // Find out where the Kraftwagen root is
     $root = kraftwagen_context_get_option('root-path');
 
     if (!($dir_src = kraftwagen_context_get_option('src-dir'))) {

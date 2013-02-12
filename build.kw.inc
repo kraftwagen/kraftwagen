@@ -17,19 +17,19 @@ function drush_kw_build_init() {
  * Implements drush_COMMAND() for `drush kw-build`.
  */
 function drush_kraftwagen_kw_build() {
-  // find out where the Kraftwagen root is
+  // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
 
-  // generate new make file in tmp
+  // Generate new make file in tmp
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
   $make_file_location = drush_tempnam('kw');
 
-  // find out where to create the new build
+  // Gind out where to create the new build
   if (!($target_dir = kraftwagen_build_determine_target($root))) {
     return drush_set_error(dt('Could not determine a build target.'));
   }
 
-  // get a maybe existant build out of the way
+  // Get a maybe existant build out of the way.
   if (!($result = kraftwagen_build_manage_existing_target($root, $target_dir))) {
     return $result;
   }
@@ -66,7 +66,7 @@ function kraftwagen_build_determine_target($root) {
     $date = date($date_pattern, time());
 
     // Generate a directory name that does not exist yet. If the date pattern
-    // is well constructed, we rarely need to add a suffix
+    // is well constructed, we rarely need to add a suffix.
     $suffix = 0;
     do {
       $target_dir = $root . DIRECTORY_SEPARATOR . $dir_builds . DIRECTORY_SEPARATOR . $date . ($suffix ? "-{$suffix}" : '');
@@ -77,7 +77,7 @@ function kraftwagen_build_determine_target($root) {
   }
 
   if ($dir_build) {
-    // we don't care whether the build directory does already exist
+    // We don't care whether the build directory does already exist.
     return $root . DIRECTORY_SEPARATOR . $dir_build;
   }
 
@@ -99,19 +99,19 @@ function kraftwagen_build_determine_target($root) {
  *   TRUE on success, FALSE on failure
  */
 function kraftwagen_build_manage_existing_target($root, $target_dir) {
-  // jump out if we do not have an existing target
+  // Jump out if we do not have an existing target
   if (!is_dir($target_dir)) {
     return true;
   }
 
   $dir_build = kraftwagen_context_get_option('build-dir');
 
-  // if not, jump out
+  // If not, jump out.
   if (!$result) {
     return drush_user_abort(dt('Build aborted, because we can\'t overwrite existing build target'));
   }
 
-  // first try to archive the existing build
+  // First try to archive the existing build.
   require_once dirname(__FILE__) . '/includes/kraftwagen.archive.inc';
   $archive_dest = kraftwagen_archive_directory($dir_build ? $dir_build : 'build', $target_dir);
   if ($archive_dest) {
@@ -120,7 +120,7 @@ function kraftwagen_build_manage_existing_target($root, $target_dir) {
     return drush_set_error(dt('Could not archive build.'));
   }
 
-  // remove the existing build
+  // Remove the existing build.
   drush_shell_exec('find %s/sites -type d -depth 1 | xargs chmod +w', $target_dir);
   drush_shell_exec('rm -rf %s', $target_dir);
   return true;

@@ -17,7 +17,7 @@ function drush_kw_init_database_init() {
  * Implements drush_COMMAND() for `drush kw-init-database`.
  */
 function drush_kraftwagen_kw_init_database() {
-  // find out where the Kraftwagen root is
+  // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
 
   if (!($dir_src = kraftwagen_context_get_option('src-dir'))) {

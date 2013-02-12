@@ -10,18 +10,18 @@
  * Implements drush_COMMAND for `drush kw-apply-module-dependencies`.
  */
 function drush_kraftwagen_kw_apply_module_dependencies($environment = 'production') {
-  // enable watchdog printing to show information about enabled, disabled, 
-  // installed and uninstalled modules
+  // Enable watchdog printing to show information about enabled, disabled, 
+  // installed and uninstalled modules.
   drush_set_option('watchdog', 'print');
 
-  // get the data we need. This is a excerpt of system_rebuild_module_data with
-  // the environment specific dependencies logic inserted
+  // Get the data we need. This is a excerpt of system_rebuild_module_data with
+  // the environment specific dependencies logic inserted.
   $modules = _system_rebuild_module_data();
   ksort($modules);
   system_get_files_database($modules, 'module');
   system_update_files_database($modules, 'module');
 
-  // inject enviroment specific dependencies into the dependencies
+  // Inject enviroment specific dependencies into the dependencies
   foreach ($modules as $key => $module) {
     if (!empty($module->info['env_dependencies'][$environment])) {
       foreach ($module->info['env_dependencies'][$environment] as $dependency) {
@@ -30,24 +30,24 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
     }
   }
 
-  // resolve dependencies and find out in which order to install modules
+  // Resolve dependencies and find out in which order to install modules.
   $files = _module_build_dependencies($modules);
 
-  // get the active profile name
+  // Get the active profile name
   $profile = drupal_get_profile();
 
-  // if we can't gather data about the install profile, we can't do anything
+  // If we can't gather data about the install profile, we can't do anything.
   if (!isset($files[$profile])) {
     return drush_set_error(dt('Could not find dependencies for profile !profile.', array('!profile' => $profile)));
   }
 
-  // to find the required modules we need to clear the required flag on the 
+  // To find the required modules we need to clear the required flag on the 
   // profile, because otherwise all modules that need to be enabled are called
   // required. Required is reserved for base modules for Drupal.
   $files[$profile]->info['required'] = FALSE;
 
-  // find the 'required' modules
-  // noteworthy fact when debugging: the field module markes modules that are 
+  // Find the 'required' modules
+  // Noteworthy fact when debugging: the field module markes modules that are 
   // used by existing fields as 'required'.
   $required = array();
   foreach ($files as $name => $info) {
@@ -67,7 +67,7 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   }
   arsort($required);
 
-  // find the modules that the profile depend on (the whole dependency tree)
+  // Find the modules that the profile depend on (the whole dependency tree).
   $dependencies = array();
   foreach (array_keys($files[$profile]->requires) as $dependency) {
     if (!isset($required[$dependency])) {
@@ -80,14 +80,14 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   }
   arsort($dependencies);
 
-  // enable the required modules and dependencies
+  // Enable the required modules and dependencies.
   $expected = array_merge(array_keys($required), array_keys($dependencies));
   $result = module_enable($expected);
   if (!$result) {
     return drush_set_error(dt('An unexpected error occured while trying to enable modules !modules', array('!modules', implode(', ', $expected))));
   }
 
-  // check for enabled modules that are not expected to be enabled
+  // Check for enabled modules that are not expected to be enabled.
   $unexpected = array();
   foreach (module_list(TRUE) as $module) {
     if (!in_array($module, $expected) && $module != $profile) {
@@ -100,13 +100,13 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   asort($unexpected);
   $unexpected = array_keys($unexpected);
 
-  // disable the unexpected modules
+  // Disable the unexpected modules.
   if ($unexpected) {
     module_disable($unexpected);
   }
 
-  // check for modules that are still installed even though they are not
-  // expected
+  // Check for modules that are still installed even though they are not
+  // expected.
   $orphan_installs = array();
   include_once DRUPAL_ROOT . '/includes/install.inc';
   foreach ($files as $name => $info) {
@@ -119,7 +119,7 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   asort($orphan_installs);
   $orphan_installs = array_keys($orphan_installs);
 
-  // remove the hanging installs
+  // Remove the hanging installs.
   if ($orphan_installs) {
     $result = drupal_uninstall_modules($orphan_installs, FALSE);
     if (!$result) {
