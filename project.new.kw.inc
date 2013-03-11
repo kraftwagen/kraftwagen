@@ -13,8 +13,15 @@
  *   Directory where to create the new project. Optional. Defaults to the 
  *   current working directory.
  */
-function drush_kraftwagen_kw_new_project($dir = NULL) {
-  $dir = realpath($dir ? $dir : getcwd());
+function drush_kraftwagen_kw_new_project($argdir = NULL) {
+  if (!file_exists(realpath(getcwd() . '/' . $argdir))){
+    drush_mkdir(getcwd() . '/' . $argdir);
+  }
+  $dir = realpath($argdir ? $argdir : getcwd());
+  if (!$dir) {
+    drush_log(dt('The directory !dir could not be created.', array('!dir' => './' . $argdir)), 'error');
+    return;
+  }
 
   // If the dir has a kraftwagenrc file, we should load it.
   if (file_exists($dir . DIRECTORY_SEPARATOR . KRAFTWAGEN_RC)) {
