@@ -33,6 +33,18 @@ function drush_kraftwagen_kw_setup_env() {
     drush_log(dt('Config directory !dir already exists', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_cnf)), 'warning');
   }
 
+  // determine builds directory
+  if (!($dir_builds = kraftwagen_context_get_option('builds-dir'))) {
+    return drush_set_error(dt('No builds dir name set.'));
+  }
+
+  if (!is_dir($root . DIRECTORY_SEPARATOR . $dir_builds)) {
+    drush_mkdir($root . DIRECTORY_SEPARATOR . $dir_builds);
+    drush_log(dt('Config directory !dir created', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_builds)), 'success');
+  } else {
+    drush_log(dt('Config directory !dir already exists', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_builds)), 'warning');
+  }
+
   if (!($file_environment = kraftwagen_context_get_option('environment-file'))) {
     return drush_set_error(dt('No environment file set.'));
   }
