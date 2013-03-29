@@ -8,16 +8,13 @@
 // Directory names:
 $dirs = array(
   // Default dirs for normal development;
-  'src', 'tools', 'build', 'cnf', 
+  'src', 'tools', 'build', 'cnf',
   // Directory to keep track of all builds, for production and staging:
-  'builds', 
-  // Directory to save, for example, old make files:
-  'archive', 
-
+  'builds',
   // Tools directory in the src:
   'src-tools',
   // Cnf directory in the src:
-  'src-cnf', 
+  'src-cnf',
 );
 foreach ($dirs as $dir) {
   $options["{$dir}-dir"] = current(array_reverse(explode('-', $dir)));
@@ -31,7 +28,7 @@ $options += array(
   'file-hashing-function' => 'sha1_file',
 
   // Default environment is production for safety reasons.
-  'environment-default' => 'production', 
+  'environment-default' => 'production',
   'environment-file' => 'environment',
 
   'settings-file' => 'settings.php',
@@ -60,13 +57,13 @@ $options['build-commands'] = array(
 
 $options['update-commands'] = array(
   // Make sure all required modules are enabled.
-  'kw-apply-module-dependencies' => array('*environment*'), 
+  'kw-apply-module-dependencies' => array('*environment*'),
   // Run all hook_update_N implementation of enabled modules.
-  'updatedb' => array('--yes'), 
+  'updatedb' => array('--yes'),
   // Make sure all feature definitions are applied.
-  'features-revert-all' => array('--yes'), 
+  'features-revert-all' => array('--yes'),
   // Run all manifests of all enabled modules.
-  'kw-manifests' => array('*environment*', '--yes'), 
+  'kw-manifests' => array('*environment*', '--yes'),
 );
 
 $options['setup-commands'] = array(

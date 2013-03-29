@@ -6,8 +6,6 @@ workflow.
 
 ## Directory structure
 
-* `archive`: Directory where old builds will be stored when you do not have a
-  `builds` dir.
 * `build`: Directory that contains the working Drupal installation or a symlink
   to the working Drupal installation, in a subdir of `builds`.
 * `builds`: Optional directory in which multiple builds can be stored.
