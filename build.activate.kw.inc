@@ -24,36 +24,22 @@ function drush_kraftwagen_kw_activate_build($build) {
   $root = kraftwagen_context_get_option('root-path');
 
   $dir_build = kraftwagen_context_get_option('build-dir');
+  $path_build = $root . DIRECTORY_SEPARATOR . $dir_build;
 
   // If we have settings for the base build location (not in builds directory),
   // but we build in another place, check if we can manage some symlink to it.
-  if (!$dir_build || $build == ($root . DIRECTORY_SEPARATOR . $dir_build)) {
+  if (!$dir_build || $build == $path_build) {
     return drush_log(dt('Build at !path is already activated.', array('!path' => $build)), 'success');
   }
 
-  // If base build is non-existant
-  // @TODO: Find out if there is a better way then !@lstat() to check if a
-  // path is not taken. lstat is probably a pretty IO intensive operation,
-  // while the required information is actually very simple.
-  if (@lstat($root . DIRECTORY_SEPARATOR . $dir_build)) {
-    if (!is_link($root . DIRECTORY_SEPARATOR . $dir_build)) {
-      // First try to archive the existing build.
-      require_once dirname(__FILE__) . '/includes/kraftwagen.archive.inc';
-      if (is_dir($root . DIRECTORY_SEPARATOR . $dir_build)) {
-        $archive_dest = kraftwagen_archive_directory($dir_build, $root . DIRECTORY_SEPARATOR . $dir_build);
-      }
-      else {
-        $archive_dest = kraftwagen_archive_file($dir_build, $root . DIRECTORY_SEPARATOR . $dir_build);
-      }
-      if ($archive_dest) {
-        drush_log(dt('Build archived to !dest.', array('!dest' => $archive_dest)), 'success');
-      }
-      else {
-        return drush_set_error(dt('Could not archive build.'));
-      }
-    }
-
+  // If directory build is not a link
+  if (is_dir($path_build) && is_link($path_build)) {
     drush_shell_exec('rm %s', $root . DIRECTORY_SEPARATOR . $dir_build);
+  } elseif (is_dir($path_build)) {
+    drush_log(dt('The directory ./build is NOT a symlink.
+                  Please remove the current ./build directory
+                  or move the ./build directory to ./builds/my-old-build'), 'error');
+    return drush_set_error(dt('Could not build in a existing directory.'));
   }
 
   symlink($build, $root . DIRECTORY_SEPARATOR . $dir_build);

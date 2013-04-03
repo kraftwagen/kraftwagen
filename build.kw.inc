@@ -29,11 +29,6 @@ function drush_kraftwagen_kw_build() {
     return drush_set_error(dt('Could not determine a build target.'));
   }
 
-  // Get a maybe existant build out of the way.
-  if (!($result = kraftwagen_build_manage_existing_target($root, $target_dir))) {
-    return $result;
-  }
-
   kraftwagen_commands_sequence_run('build-commands', array(
     '*make_file_location*' => $make_file_location,
     '*target_dir*' => $target_dir,
@@ -76,53 +71,13 @@ function kraftwagen_build_determine_target($root) {
     return $target_dir;
   }
 
-  if ($dir_build) {
-    // We don't care whether the build directory does already exist.
-    return $root . DIRECTORY_SEPARATOR . $dir_build;
+  // If directory build is not a link
+  if (!is_link($root . DIRECTORY_SEPARATOR . $dir_build)) {
+    drush_log(dt('The directory ./build is NOT a symlink.'. PHP_EOL
+                .'Please remove the current ./build directory'. PHP_EOL
+                .'or move the ./build directory to ./builds/my-old-build'. PHP_EOL), 'error');
   }
 
   return FALSE;
 }
 
-/**
- * Remove and optionally archive an existing build target.
- *
- * It will check if the target exists, and if it does, it tries to archive it
- * and removes it.
- *
- * @param string $root
- *   Kraftwagen root path
- * @param string $target_dir
- *   The, maybe existing target dir
- *
- * @return bool
- *   TRUE on success, FALSE on failure
- */
-function kraftwagen_build_manage_existing_target($root, $target_dir) {
-  // Jump out if we do not have an existing target.
-  if (!is_dir($target_dir)) {
-    return TRUE;
-  }
-
-  $dir_build = kraftwagen_context_get_option('build-dir');
-
-  // If not, jump out.
-  if (!$result) {
-    return drush_user_abort(dt('Build aborted, because we can\'t overwrite existing build target'));
-  }
-
-  // First try to archive the existing build.
-  require_once dirname(__FILE__) . '/includes/kraftwagen.archive.inc';
-  $archive_dest = kraftwagen_archive_directory($dir_build ? $dir_build : 'build', $target_dir);
-  if ($archive_dest) {
-    drush_log(dt('Build archived to !dest.', array('!dest' => $archive_dest)), 'success');
-  }
-  else {
-    return drush_set_error(dt('Could not archive build.'));
-  }
-
-  // Remove the existing build.
-  drush_shell_exec('find %s/sites -type d -depth 1 | xargs chmod +w', $target_dir);
-  drush_shell_exec('rm -rf %s', $target_dir);
-  return TRUE;
-}
