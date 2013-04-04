@@ -12,24 +12,26 @@
 function drush_kraftwagen_kw_import_translations() {
   include_once DRUPAL_ROOT . '/includes/locale.inc';
 
-  $batch = kraftwagen_import_translations_batch();
-
-  if (!$batch) {
+  $files = kraftwagen_import_translations_files();
+  if (!$files) {
     return drush_log(dt('No translation files found.'), 'warning');
   }
 
-  batch_set($batch);
-  $batch = &batch_get();
-  $batch['progressive'] = FALSE;
-  drush_backend_batch_process();
+  foreach ($files as $file) {
+    $path = realpath($file->uri);
+    if (!kraftwagen_import_translations_import($path)) {
+      return drush_error(dt('Could not import @path', array('@path' => $path)));
+    }
+    drush_log(dt('Imported @path', array('@path' => $path)), 'status');
+  }
 
   drush_log(dt('Translation files imported.'), 'success');
 }
 
 /**
- * Constructs the batch using the locale functionality in Drupal.
+ * Find out which .po files to import.
  */
-function kraftwagen_import_translations_batch() {
+function kraftwagen_import_translations_files() {
   $files = array();
   $languages = language_list('enabled');
   unset($languages[1]['en']);
@@ -49,7 +51,20 @@ function kraftwagen_import_translations_batch() {
       $files = array_merge($files, file_scan_directory(dirname($component->filename) . '/translations', '/(^|\.)(' . $language_list . ')\.po$/', array('recurse' => FALSE)));
     }
 
-    return _locale_batch_build($files);
+    return $files;
   }
+  return FALSE;
+}
+
+/**
+ * Import a .po file.
+ */
+function kraftwagen_import_translations_import($filepath) {
+  if (preg_match('!(/|\.)([^\./]+)\.po$!', $filepath, $langcode)) {
+    $file = (object) array('filename' => drupal_basename($filepath), 'uri' => realpath($filepath));
+    _locale_import_read_po('db-store', $file, LOCALE_IMPORT_OVERWRITE, $langcode[2]);
+    return TRUE;
+  }
+
   return FALSE;
 }
