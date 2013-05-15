@@ -55,5 +55,5 @@ function drush_kraftwagen_kw_generate_makefile($location, $src_dir = NULL) {
     '**SRC_DIR**' => $src_dir,
   ));
 
-  drush_log(dt('Make file generated.'), 'success');
+  drush_log(dt('Makefile generated from template (!path).', array('!path' => $src_dir . DIRECTORY_SEPARATOR . $dir_src_tools . DIRECTORY_SEPARATOR . $file_make_tpl)), 'success');
 }
