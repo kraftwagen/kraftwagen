@@ -57,6 +57,6 @@ function drush_kraftwagen_kw_setup_settings() {
     }
 
     @copy($root . DIRECTORY_SEPARATOR . $dir_src . DIRECTORY_SEPARATOR . $dir_src_cnf . DIRECTORY_SEPARATOR . $file_name, $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_name);
-    drush_log(dt('Copied !key from !src to !dest', array('!key' => str_replace('-', ' ', $key), '!src' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_name, '!dest' => $root . DIRECTORY_SEPARATOR . $dir_src . DIRECTORY_SEPARATOR . $dir_src_cnf . DIRECTORY_SEPARATOR . $file_name)), 'success');
+    drush_log(dt('Copied !key from !src to !dest', array('!key' => str_replace('-', ' ', $key), '!src' => $root . DIRECTORY_SEPARATOR . $dir_src . DIRECTORY_SEPARATOR . $dir_src_cnf . DIRECTORY_SEPARATOR . $file_name, '!dest' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_name)), 'success');
   }
 }
