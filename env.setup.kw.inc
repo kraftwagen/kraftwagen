@@ -57,6 +57,8 @@ function drush_kraftwagen_kw_setup_env() {
     file_put_contents($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, $default_environment);
 
     drush_log(dt('Setup environment in !file to !environment', array('!file' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, '!environment' => $default_environment)), 'success');
+
+    drush_log(dt('If you are on a development machine, you\'ll want to change !path to \'development\'.', array('!path' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, '!environment' => $default_environment)), 'ok');
   }
   else {
     drush_log(dt('Environment already set in !file', array('!file' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment)), 'warning');

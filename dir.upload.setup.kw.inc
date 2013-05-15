@@ -36,4 +36,6 @@ function drush_kraftwagen_kw_setup_upload_dir() {
     drush_mkdir($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files);
     drush_log(dt('Files dir at !path created', array('!path' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files)), 'success');
   }
+
+  drush_log(dt('You\'ll want to make !path writable for your webserver user.', array('!path' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $dir_files)), 'ok');
 }
