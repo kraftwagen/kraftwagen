@@ -1,0 +1,10 @@
+# Environment sync
+
+The `src/cnf` directory contains files and directories. This structure is
+copied into `cnf`. We use a templating structure to make this work.
+
+In `cnf/.orginals` we keep a directory with copies of the original files from
+the `src/cnf` files. This way, we can check if a file in the `src/cnf` has 
+changed since the last time setup has ran.
+In `cnf/.env_settings.php`, we keep a PHP file that stores the values of all
+filled in values, so we don't need to ask them again when running setup again.

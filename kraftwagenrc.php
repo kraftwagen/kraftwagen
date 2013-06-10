@@ -35,6 +35,7 @@ $options += array(
   'settings-local-file' => 'settings.local.php',
   'files-dir' => 'files',
   'drupal-config-dir' => 'default',
+  'environment-originals-dir' => '.originals',
 );
 
 // Default way to find the Kraftwagen root directory is checking for the
