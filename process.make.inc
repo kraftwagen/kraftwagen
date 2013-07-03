@@ -47,18 +47,18 @@ function make_download_kraftwagen_symlink($project, $target, $link_name) {
     drush_op_system("unlink {$link_name}");
   }
   // Create the symlink.
-  drush_op_system("ln -s {$link_name} {$target[url]}");
+  drush_op_system("ln -s {$target[url]} {$link_name}");
   // Check if symlink was created correctly.
-  if (is_link($target[url])){
+  if (is_link($link_name)){
     drush_log(dt("Symlink '!link_name' to '!target' has been created.", array(
       '!link_name' => $link_name,
-      '!symlink'   => $target,
+      '!target'    => $target[url],
     )), 'success');
   }
   else{
     return drush_set_error('Error creating symlink', dt("Cannot create symlink '!link_name' to '!target'.", array(
       '!link_name' => $link_name,
-      '!symlink'   => $target,
+      '!target'    => $target[url],
     )), 'error');
   }
 
