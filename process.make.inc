@@ -39,27 +39,26 @@ function make_download_kraftwagen_symlink($project, $target, $link_name) {
     return drush_set_error('DRUSH_IS_WINDOWS', dt("Symlinks cannot be created on Windows platform."));
   }
   // Check if target is a directory. If so, delete it.
-  if(is_dir($link_name)){
-    drush_op_system("rm -rf {$link_name}");
+  if (is_dir($link_name)) {
+    drush_delete_dir($link_name, TRUE);
   }
   // If it is a link, then unlink.
-  elseif(is_link($link_name)){
-    drush_op_system("unlink {$link_name}");
+  elseif (is_link($link_name)) {
+    unlink($link_name);
   }
   // Create the symlink.
-  drush_op_system("ln -s {$target[url]} {$link_name}");
+  symlink($target['url'], $link_name);
   // Check if symlink was created correctly.
-  if (is_link($link_name)){
+  if (is_link($link_name)) {
     drush_log(dt("Symlink '!link_name' to '!target' has been created.", array(
       '!link_name' => $link_name,
-      '!target'    => $target[url],
+      '!target'    => $target['url'],
     )), 'success');
   }
-  else{
+  else {
     return drush_set_error('Error creating symlink', dt("Cannot create symlink '!link_name' to '!target'.", array(
       '!link_name' => $link_name,
-      '!target'    => $target[url],
+      '!target'    => $target['url'],
     )), 'error');
   }
-
 }
