@@ -15,47 +15,39 @@
 function drush_kraftwagen_kw_update_makefile($makefile) {
   require_once dirname(__FILE__) . '/includes/kraftwagen.info_files.inc';
 
-  // Parse the info file.
-  $info = kraftwagen_parse_info_file($makefile);
-  if ($info === FALSE) {
-    return drush_set_error(dt('Could not open make file !makefile', array('!makefile' => $makefile)));
-  }
-  if (($info = make_validate_info_file($info)) === FALSE) {
-    return drush_set_error(dt('Could not validate make file !makefile', array('!makefile' => $makefile)));
-  }
+  $info = kraftwagen_read_info_file($makefile);
+  $update_info = kraftwagen_update_projects($info);
 
-  // Get updated version of the info.
-  $info_updated = kraftwagen_update_projects($info);
-
-  if ($info === $info_updated) {
-    drush_log(dt('There are no changes to the makefile, so we did not write a new version.'), 'ok');
+  if (empty($update_info)) {
+    drush_log(dt('No updates required.'), 'success');
     return;
   }
 
-  // Generate makefile from info.
-  $data = kraftwagen_generate_info_file($info_updated);
+  if (!kraftwagen_update_makefile($makefile, $update_info)) {
+    return FALSE;
+  }
 
-  // Write data to file.
-  file_put_contents($makefile, $data);
-
-  drush_log(dt('The changes have been written to the makefile.'), 'ok');
+  drush_log(dt('Updated !makefile.', array('!makefile' => $makefile)), 'success');
 }
 
 /**
- * Reads a makefile for projects and updates the versions.
+ * Reads a makefile for projects and returns the updated versions.
  *
  * @param array $info
  *   The make file info array
  *
  * @return array
- *   The updated info array
+ *   The update info
  */
 function kraftwagen_update_projects($info) {
   drush_include_engine('release_info', 'updatexml');
 
+  $update_info = array();
+
   foreach($info['projects'] as $project_name => $project) {
     if (isset($project['download'])) {
-      drush_log(dt('Project !project is downloaded explicitly instead of normal contrib or core behavior. We will not try to update this.', array('!project' => $project_name)), 'success');
+      drush_log(dt('Project !project is downloaded explicitly instead of normal contrib or core behavior. We will not try to update this.', array('!project' => $project_name)), 'ok');
+      continue;
     }
 
     // Projects without a version specified are serious upgrade risk.
@@ -94,16 +86,46 @@ function kraftwagen_update_projects($info) {
       continue;
     }
 
-    // Only update to the new version if the suggested version is actually newer
-    // than our currently specified version.
-    if (version_compare($project_data_retrieved['version'], $project['version'], '>')) {
-      $info['projects'][$project_name]['version'] = $project_data_retrieved['version'];
-      drush_log(dt('Project !project has been upgraded to version !version.', array('!project' => $project_name, '!version' => $project_data_retrieved['version'])), 'success');
+    $version_string = $project_data_retrieved['version_major'] . '.' . $project_data_retrieved['version_patch'];
+    if (!empty($project_data_retrieved['version_extra'])) {
+      $version_string .= '-' . $project_data_retrieved['version_extra'];
     }
-    else {
-      drush_log(dt('Project !project has not been upgraded because it already is at the latest version.', array('!project' => $project_name, '!version' => $project['version'])), 'ok');
+    if (version_compare($version_string, $project['version'], '>')) {
+      $update_info[$project_name] = array(
+        'current_version' => $info['projects'][$project_name]['version'],
+        'new_version' => $version_string
+      );
     }
   }
 
-  return $info;
+  return $update_info;
+}
+
+function kraftwagen_update_makefile($makefile, $update_info) {
+  $contents = file_get_contents($makefile);
+
+  foreach ($update_info as $project_name => $info) {
+    $new_contents = preg_replace(
+      '/(' . preg_quote($project_name) . '[^\n]*\[version\][^\n]*)' . preg_quote($info['current_version']) . '/', 
+      '${1}' . $info['new_version'],
+      $contents
+    );
+
+    if ($new_contents == $contents) {
+      $new_contents = preg_replace(
+        '/(' . preg_quote($project_name) . '[^\n]*[^\n]*)' . preg_quote($info['current_version']) . '/', 
+        '${1}' . $info['new_version'],
+        $contents
+      );
+
+      if ($new_contents == $contents) {
+        drush_log(dt('Could not update !project_name.', array('!project_name' => $project_name)), 'warning');
+      }
+    }
+    $contents = $new_contents;
+  }
+
+  file_put_contents($makefile, $contents);
+
+  return TRUE;
 }
