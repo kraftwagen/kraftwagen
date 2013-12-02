@@ -33,7 +33,15 @@ function make_download_kraftwagen_directory() {
  *  projects[***MACHINE_NAME***][download][type] = "kraftwagen_symlink"
  *  projects[***MACHINE_NAME***][download][url] = "**SRC_DIR**  ($target)
 */
-function make_download_kraftwagen_symlink($project, $target, $link_name) {
+function make_download_kraftwagen_symlink() {
+  $args = func_get_args();
+  $name = array_shift($args);
+  if (count($args) > 2) {
+    $type = array_shift($args);
+  }
+  $target = array_shift($args);
+  $link_name = array_shift($args);
+
   // Symlinks cannot be created on Windows OS.
   if (drush_is_windows()) {
     return drush_set_error('DRUSH_IS_WINDOWS', dt("Symlinks cannot be created on Windows platform."));
