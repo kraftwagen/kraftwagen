@@ -38,18 +38,30 @@ function drush_kraftwagen_kw_new_project($argdir = NULL) {
   // Ask for the human readable name of the project. This can be used for the
   // name property of the install profile. Defaults to the name of the current
   // directory.
-  $project_label = drush_prompt(dt('Enter the human readable name of the project'), basename($dir));
+  $project_label = drush_get_option(array('human-name', 'hn'));
+  if (!$project_label) {
+    $project_label = drush_prompt(dt('Enter the human readable name of the project'), basename($dir));
+  }
 
   // Create machine name for the project. This defaults to a simplified version
   // of the human readable name. This is used for the file names.
-  $project_name = _kraftwagen_drush_prompt_validate(
-    dt('Enter the internal machine name of the project'),
-    _kraftwagen_generate_name($project_label), TRUE, '_kraftwagen_validate_name'
-  );
+  $project_name = drush_get_option(array('name', 'n'));
+  if (!$project_name) {
+    $project_name = _kraftwagen_drush_prompt_validate(
+      dt('Enter the internal machine name of the project'),
+      _kraftwagen_generate_name($project_label), TRUE, '_kraftwagen_validate_name'
+    );
+  }
 
   // Ask for the location of the git repository that contains the skeleton.
-  $skeleton = drush_prompt(dt('Enter the location of the skeleton repository'), 'git://github.com/kraftwagen/skeleton.git');
-  $branch = drush_prompt(dt('Enter the name of the branch to use [source repository HEAD]'), NULL, FALSE);
+  $skeleton = drush_get_option(array('skeleton'));
+  $branch = drush_get_option(array('branch'));
+  if (!$skeleton) {
+    $skeleton = drush_prompt(dt('Enter the location of the skeleton repository'), 'git://github.com/kraftwagen/skeleton.git');
+  }
+  if (!$branch) {
+    $branch = drush_prompt(dt('Enter the name of the branch to use [source repository HEAD]'), NULL, FALSE);
+  }
 
   // Create a tempdir where we are going to clone the repository in.
   $tempdir = drush_tempdir();
