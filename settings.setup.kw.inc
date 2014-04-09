@@ -29,10 +29,13 @@ function drush_kraftwagen_kw_setup_settings() {
     return drush_set_error(dt('Could not use environment in !dir. Setup environment first.', array('!dir' => $root . DIRECTORY_SEPARATOR . $dir_cnf)));
   }
 
-  $file_keys = array('settings-file', 'settings-local-file');
+  $file_keys = array('settings-file', 'settings-local-file', 'kraftwagenrc-file');
   $file_names = array();
   foreach ($file_keys as $key) {
-    if (!($name = kraftwagen_context_get_option($key))) {
+    if ($key == 'kraftwagenrc-file') {
+      $name = KRAFTWAGEN_RC;
+    } 
+    elseif (!($name = kraftwagen_context_get_option($key))) {
       return drush_set_error(dt('No !key name set.', array('!key' => str_replace('-', ' ', $key))));
     }
     $file_names[$key] = $name;
