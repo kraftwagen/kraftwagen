@@ -28,7 +28,7 @@ define('KRAFTWAGEN_CONTEXT_RUNTIME', 'process');
  * Load the default kraftwagenrc.php file.
  */
 function kraftwagen_context_load_default_config() {
-  foreach (array(dirname(__FILE__) . '/../' . KRAFTWAGEN_RC, drush_server_home() . '/.drush/' . KRAFTWAGEN_RC) as $file) {
+  foreach (array(dirname(__FILE__) . '/../' . KRAFTWAGEN_RC, '/etc/' . KRAFTWAGEN_RC, drush_server_home() . '/.drush/' . KRAFTWAGEN_RC) as $file) {
     if (file_exists($file)) {
       kraftwagen_context_load_config_file($file, KRAFTWAGEN_CONTEXT_DEFAULT);
     }
@@ -46,8 +46,10 @@ function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
   // If a root is found, initialize it.
   if (!empty($root)) {
     kraftwagen_context_set_option('root-path', $root);
-    if (file_exists($root . '/' . KRAFTWAGEN_RC)) {
-      kraftwagen_context_load_config_file($root . '/' . KRAFTWAGEN_RC, KRAFTWAGEN_CONTEXT_ROOT);
+    foreach (array($root . '/cnf/' . KRAFTWAGEN_RC, $root . '/' . KRAFTWAGEN_RC) as $file) {
+      if (file_exists($file)) {
+        kraftwagen_context_load_config_file($file, KRAFTWAGEN_CONTEXT_ROOT);
+      }
     }
   }
   elseif ($required) {
