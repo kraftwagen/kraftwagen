@@ -52,7 +52,7 @@ function drush_kraftwagen_kw_generate_makefile($location, $src_dir = NULL) {
 
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
   kraftwagen_file_replace($src_dir . DIRECTORY_SEPARATOR . $dir_src_tools . DIRECTORY_SEPARATOR . $file_make_tpl, $location, array(
-    '**SRC_DIR**' => $src_dir,
+    '**SRC_DIR**' => addslashes($src_dir),
   ));
 
   drush_log(dt('Makefile generated from template (!path).', array('!path' => $src_dir . DIRECTORY_SEPARATOR . $dir_src_tools . DIRECTORY_SEPARATOR . $file_make_tpl)), 'success');
