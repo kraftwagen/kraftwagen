@@ -38,3 +38,51 @@ function kraftwagen_file_replace($original_filepath, $destination_filepath, $rep
   $contents = str_replace(array_keys($replacements), array_values($replacements), $contents);
   file_put_contents($destination_filepath, $contents);
 }
+
+/**
+ * Helper to get a relative path from 2 absolute paths.
+ *
+ * This function is taken from http://stackoverflow.com/a/2638272
+ *
+ * @param $from
+ *   The directory to start from.
+ *
+ * @param $to
+ *   The directory to go to.
+ *
+ * @return string
+ *   The relative path.
+ */
+function kraftwagen_get_relative_path($from, $to) {
+  // Some compatibility fixes for Windows paths.
+  $from = is_dir($from) ? rtrim($from, '\/') . '/' : $from;
+  $to   = is_dir($to)   ? rtrim($to, '\/') . '/'   : $to;
+  $from = str_replace('\\', '/', $from);
+  $to   = str_replace('\\', '/', $to);
+
+  $from     = explode('/', $from);
+  $to       = explode('/', $to);
+  $relPath  = $to;
+
+  foreach ($from as $depth => $dir) {
+    // Find first non-matching dir.
+    if ($dir === $to[$depth]) {
+      // Ignore this directory.
+      array_shift($relPath);
+    }
+    else {
+      // Get number of remaining dirs to $from.
+      $remaining = count($from) - $depth;
+      if ($remaining > 1) {
+        // Add traversals up to first matching dir.
+        $padLength = (count($relPath) + $remaining - 1) * -1;
+        $relPath = array_pad($relPath, $padLength, '..');
+        break;
+      }
+      else {
+        $relPath[0] = './' . $relPath[0];
+      }
+    }
+  }
+  return implode('/', $relPath);
+}
