@@ -42,6 +42,7 @@ function drush_kraftwagen_kw_activate_build($build) {
     return drush_set_error(dt('Could not build in a existing directory.'));
   }
 
-  symlink($build, $root . DIRECTORY_SEPARATOR . $dir_build);
+  $relative_build = kraftwagen_get_relative_path($root, $build);
+  symlink($relative_build, $root . DIRECTORY_SEPARATOR . $dir_build);
   drush_log(dt('Symlinked \'!target\' to \'!link\'.', array('!link' => $root . DIRECTORY_SEPARATOR . $dir_build, '!target' => $build)), 'success');
 }

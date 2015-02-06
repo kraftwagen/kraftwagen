@@ -51,6 +51,7 @@ function drush_kraftwagen_kw_setup_symlink($build, $name) {
     return drush_set_error(dt('Could not find symlink source at !path', array('!path' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name)));
   }
 
-  symlink($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name, $build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $name);
+  $relative_target = kraftwagen_get_relative_path($root, $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name);
+  symlink($relative_target, $build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $name);
   drush_log(dt('Symlinked \'!name\' to build.', array('!name' => $name . (is_dir($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name) ? '/' : ''))), 'success');
 }
