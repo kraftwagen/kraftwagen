@@ -43,6 +43,8 @@ function drush_kraftwagen_kw_activate_build($build) {
   }
 
 
+  // Clear statcache for build directory, PHP tells us our symlink exists because we execute realpath().
+  clearstatcache(TRUE, $root . DIRECTORY_SEPARATOR . $dir_build);
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
 
   // Get old working directory.
