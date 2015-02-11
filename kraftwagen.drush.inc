@@ -21,6 +21,10 @@ function kraftwagen_drush_command() {
     'aliases' => array('kw-np'),
     'options' => array(
       'force' => dt('Forces execution of this command, even if the specified source dir already exists.'),
+      'human-name' => dt('Provide the human name for the project.'),
+      'name' => dt('Provide name for the project.'),
+      'skeleton' => dt('Provide skeleton location.'),
+      'branch' => dt('Provide the name of the branch to use.'),
     ),
   );
 
