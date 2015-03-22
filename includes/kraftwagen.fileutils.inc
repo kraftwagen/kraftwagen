@@ -38,3 +38,79 @@ function kraftwagen_file_replace($original_filepath, $destination_filepath, $rep
   $contents = str_replace(array_keys($replacements), array_values($replacements), $contents);
   file_put_contents($destination_filepath, $contents);
 }
+
+/**
+ * Helper to get a relative path from 2 absolute paths.
+ *
+ * This function is taken from http://stackoverflow.com/a/2638272
+ *
+ * @param $from
+ *   The directory to start from.
+ * @param $to
+ *   The directory to go to.
+ *
+ * @return string
+ *   The relative path.
+ */
+function kraftwagen_get_relative_path($from, $to) {
+  // Some compatibility fixes for Windows paths.
+  $from = is_dir($from) ? rtrim($from, '\/') . '/' : $from;
+  $to   = is_dir($to)   ? rtrim($to, '\/') . '/'   : $to;
+  $from = str_replace('\\', '/', $from);
+  $to   = str_replace('\\', '/', $to);
+
+  $from     = explode('/', $from);
+  $to       = explode('/', $to);
+
+  $rel_path  = $to;
+  foreach ($from as $depth => $dir) {
+    // Find first non-matching dir.
+    if ($dir === $to[$depth]) {
+      // Ignore this directory.
+      array_shift($rel_path);
+      continue;
+    }
+
+    // Get number of remaining dirs to $from.
+    $remaining = count($from) - $depth;
+    if ($remaining > 1) {
+      // Add traversals up to first matching dir.
+      $pad_length = (count($rel_path) + $remaining - 1) * -1;
+      $rel_path = array_pad($rel_path, $pad_length, '..');
+      break;
+    }
+    
+    $rel_path[0] = './' . $rel_path[0];
+  }
+
+  return implode('/', $rel_path);
+}
+
+function kraftwagen_symlink($from, $to) {
+  // Some compatibility fixes for Windows paths.
+  $from = is_dir($from) ? rtrim($from, '\/') . '/' : $from;
+  $to   = is_dir($to)   ? rtrim($to, '\/') . '/'   : $to;
+  $from = str_replace('\\', '/', $from);
+  $to   = str_replace('\\', '/', $to);
+
+  // Clear statcache for build directory, PHP tells us our symlink exists because we execute realpath().
+  clearstatcache(TRUE, $to);
+
+  // Get old working directory.
+  $old_cwd = getcwd();
+
+  // Find the directory where the symlink should be placed in, and change to it.
+  $to_parent = dirname($to);
+  chdir($to_parent);
+
+  $use_relative_symlinks = kraftwagen_context_get_option('use-relative-symlinks');
+  $target = $to;
+  if ($use_relative_symlinks) {
+    $target = kraftwagen_get_relative_path($to_parent, $from);
+  }
+
+  symlink($target, $to);
+
+  // Change working directory back.
+  chdir($old_cwd);
+}
