@@ -42,26 +42,8 @@ function drush_kraftwagen_kw_activate_build($build) {
     return drush_set_error(dt('Could not build in a existing directory.'));
   }
 
-
-  // Clear statcache for build directory, PHP tells us our symlink exists because we execute realpath().
-  clearstatcache(TRUE, $root . DIRECTORY_SEPARATOR . $dir_build);
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
+  kraftwagen_symlink($build, $path_build);
 
-  // Get old working directory.
-  $old_cwd = getcwd();
-
-  // Change working directory to the root so our symlink is correct.
-  chdir($root);
-
-  $use_relative_symlinks = kraftwagen_context_get_option('use-relative-symlinks');
-  $target = $build;
-  if ($use_relative_symlinks == TRUE) {
-    $target = kraftwagen_get_relative_path($root, $build);
-  }
-
-  symlink($target, $root . DIRECTORY_SEPARATOR . $dir_build);
-
-  // Change working directory back.
-  chdir($old_cwd);
   drush_log(dt('Symlinked \'!target\' to \'!link\'.', array('!link' => $root . DIRECTORY_SEPARATOR . $dir_build, '!target' => $build)), 'success');
 }

@@ -52,23 +52,7 @@ function drush_kraftwagen_kw_setup_symlink($build, $name) {
   }
 
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
-
-  // Get old working directory.
-  $old_cwd = getcwd();
-
-  // Change working directory to the root so our symlink is correct.
-  chdir($root);
-
-  $use_relative_symlinks = kraftwagen_context_get_option('use-relative-symlinks');
-  $target = $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name;
-  if ($use_relative_symlinks == TRUE) {
-    $target = kraftwagen_get_relative_path($build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $name, $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name);
-  }
-
-  symlink($target, $build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $name);
-
-  // Change working directory back.
-  chdir($old_cwd);
+  kraftwagen_symlink($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name, $build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $name);
 
   drush_log(dt('Symlinked \'!name\' to build.', array('!name' => $name . (is_dir($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name) ? '/' : ''))), 'success');
 }

@@ -85,3 +85,32 @@ function kraftwagen_get_relative_path($from, $to) {
 
   return implode('/', $rel_path);
 }
+
+function kraftwagen_symlink($from, $to) {
+  // Some compatibility fixes for Windows paths.
+  $from = is_dir($from) ? rtrim($from, '\/') . '/' : $from;
+  $to   = is_dir($to)   ? rtrim($to, '\/') . '/'   : $to;
+  $from = str_replace('\\', '/', $from);
+  $to   = str_replace('\\', '/', $to);
+
+  // Clear statcache for build directory, PHP tells us our symlink exists because we execute realpath().
+  clearstatcache(TRUE, $to);
+
+  // Get old working directory.
+  $old_cwd = getcwd();
+
+  // Find the directory where the symlink should be placed in, and change to it.
+  $to_parent = dirname($to);
+  chdir($to_parent);
+
+  $use_relative_symlinks = kraftwagen_context_get_option('use-relative-symlinks');
+  $target = $to;
+  if ($use_relative_symlinks) {
+    $target = kraftwagen_get_relative_path($to_parent, $from);
+  }
+
+  symlink($target, $to);
+
+  // Change working directory back.
+  chdir($old_cwd);
+}
