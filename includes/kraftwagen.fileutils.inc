@@ -46,7 +46,6 @@ function kraftwagen_file_replace($original_filepath, $destination_filepath, $rep
  *
  * @param $from
  *   The directory to start from.
- *
  * @param $to
  *   The directory to go to.
  *
@@ -62,27 +61,27 @@ function kraftwagen_get_relative_path($from, $to) {
 
   $from     = explode('/', $from);
   $to       = explode('/', $to);
-  $relPath  = $to;
 
+  $rel_path  = $to;
   foreach ($from as $depth => $dir) {
     // Find first non-matching dir.
     if ($dir === $to[$depth]) {
       // Ignore this directory.
-      array_shift($relPath);
+      array_shift($rel_path);
+      continue;
     }
-    else {
-      // Get number of remaining dirs to $from.
-      $remaining = count($from) - $depth;
-      if ($remaining > 1) {
-        // Add traversals up to first matching dir.
-        $padLength = (count($relPath) + $remaining - 1) * -1;
-        $relPath = array_pad($relPath, $padLength, '..');
-        break;
-      }
-      else {
-        $relPath[0] = './' . $relPath[0];
-      }
+
+    // Get number of remaining dirs to $from.
+    $remaining = count($from) - $depth;
+    if ($remaining > 1) {
+      // Add traversals up to first matching dir.
+      $pad_length = (count($rel_path) + $remaining - 1) * -1;
+      $rel_path = array_pad($rel_path, $pad_length, '..');
+      break;
     }
+    
+    $rel_path[0] = './' . $rel_path[0];
   }
-  return implode('/', $relPath);
+
+  return implode('/', $rel_path);
 }
