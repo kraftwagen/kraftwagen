@@ -19,12 +19,47 @@ function drush_kw_activate_build_init() {
  * @param string $build
  *   The location of the build to be activated.
  */
-function drush_kraftwagen_kw_activate_build($build) {
+function drush_kraftwagen_kw_activate_build($build = NULL) {
   // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
 
   $dir_build = kraftwagen_context_get_option('build-dir');
   $path_build = $root . DIRECTORY_SEPARATOR . $dir_build;
+
+  if (empty($build)) {
+    $dir_builds = kraftwagen_context_get_option('builds-dir');
+    $path_builds = $root . DIRECTORY_SEPARATOR . $dir_builds;
+
+    // Get dir listing and remove current (.) and parent (..) dir.
+    $dir_list = scandir($path_builds);
+    unset($dir_list[0], $dir_list[1]);
+
+    // Build list of available builds.
+    drush_print("Choose build:\n");
+
+    $builds = array();
+    $count = 1;
+    $active_build = array_pop(explode(DIRECTORY_SEPARATOR, realpath($path_build)));
+    foreach ($dir_list as $filename) {
+      if (is_dir($path_builds . DIRECTORY_SEPARATOR . $filename)) {
+        if (preg_match("/[0-9]{8}-[0-9]{6}/", $filename)) {
+          drush_print(" " . $count . ") " . $filename . ($active_build == $filename ? " (current)" : ""));
+          $builds[] = $filename;
+          $count++;
+        }
+      }
+    }
+    drush_print("");
+
+    $selected_build = drush_prompt(dt('Activate build'), NULL, TRUE);
+    if (is_numeric($selected_build) && isset($builds[$selected_build - 1])) {
+      $build = $path_builds . DIRECTORY_SEPARATOR . $builds[$selected_build - 1];
+    }
+    else {
+      drush_log('Invalid selection', 'error');
+      return FALSE;
+    }
+  }
 
   // If we have settings for the base build location (not in builds directory),
   // but we build in another place, check if we can manage some symlink to it.

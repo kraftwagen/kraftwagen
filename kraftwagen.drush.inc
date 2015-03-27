@@ -51,7 +51,6 @@ function kraftwagen_drush_command() {
     'arguments' => array(
       'build' => dt('The location of the build'),
     ),
-    'required-arguments' => 1,
   );
 
   $items['kw-update-makefile'] = array(
