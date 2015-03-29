@@ -26,10 +26,10 @@ function drush_kraftwagen_kw_activate_build($build = NULL) {
   $dir_build = kraftwagen_context_get_option('build-dir');
   $path_build = $root . DIRECTORY_SEPARATOR . $dir_build;
 
-  if (empty($build)) {
-    $dir_builds = kraftwagen_context_get_option('builds-dir');
-    $path_builds = $root . DIRECTORY_SEPARATOR . $dir_builds;
+  $dir_builds = kraftwagen_context_get_option('builds-dir');
+  $path_builds = $root . DIRECTORY_SEPARATOR . $dir_builds;
 
+  if (empty($build)) {
     // Get dir listing and remove current (.) and parent (..) dir.
     $dir_list = scandir($path_builds);
     unset($dir_list[0], $dir_list[1]);
@@ -59,6 +59,9 @@ function drush_kraftwagen_kw_activate_build($build = NULL) {
       drush_log('Invalid selection', 'error');
       return FALSE;
     }
+  }
+  elseif (!empty($build) && is_string($build) && preg_match("/^[0-9]{8}-[0-9]{6}$/", $build)) {
+    $build = $path_builds . DIRECTORY_SEPARATOR . $build;
   }
 
   // If we have settings for the base build location (not in builds directory),
