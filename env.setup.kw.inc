@@ -16,7 +16,7 @@ function drush_kw_setup_env_init() {
 /**
  * Implements drush_COMMAND for `drush kw-setup-env`.
  */
-function drush_kraftwagen_kw_setup_env() {
+function drush_kraftwagen_kw_setup_env($default_environment) {
   // Find out where the Kraftwagen root is.
   $root = kraftwagen_context_get_option('root-path');
 
@@ -50,10 +50,11 @@ function drush_kraftwagen_kw_setup_env() {
   }
 
   if (!file_exists($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment)) {
-    if (!($default_environment = kraftwagen_context_get_option('environment-default'))) {
-      return drush_set_error(dt('No default environment set.'));
+    if(!$default_environment) {
+      if (!($default_environment = kraftwagen_context_get_option('environment-default'))) {
+        return drush_set_error(dt('No default environment set.'));
+      }
     }
-
     file_put_contents($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, $default_environment);
 
     drush_log(dt('Setup environment in !file to !environment', array('!file' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, '!environment' => $default_environment)), 'success');

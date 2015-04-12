@@ -68,7 +68,7 @@ $options['update-commands'] = array(
 );
 
 $options['setup-commands'] = array(
-  'kw-setup-env',
+  'kw-setup-env' => array('*environment*'),
   'kw-setup-settings',
   'kw-setup-upload-dir',
 );
