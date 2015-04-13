@@ -50,11 +50,10 @@ function drush_kraftwagen_kw_setup_env($default_environment) {
   }
 
   if (!file_exists($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment)) {
-    if(!$default_environment) {
-      if (!($default_environment = kraftwagen_context_get_option('environment-default'))) {
-        return drush_set_error(dt('No default environment set.'));
-      }
+    if (!($default_environment)) {
+      return drush_set_error(dt('No default environment set.'));
     }
+
     file_put_contents($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, $default_environment);
 
     drush_log(dt('Setup environment in !file to !environment', array('!file' => $root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment, '!environment' => $default_environment)), 'success');
