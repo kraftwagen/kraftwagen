@@ -104,7 +104,7 @@ function kraftwagen_symlink($from, $to) {
   chdir($to_parent);
 
   $use_relative_symlinks = kraftwagen_context_get_option('use-relative-symlinks');
-  $target = $to;
+  $target = $from;
   if ($use_relative_symlinks) {
     $target = kraftwagen_get_relative_path($to_parent, $from);
   }

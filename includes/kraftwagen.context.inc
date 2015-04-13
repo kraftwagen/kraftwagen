@@ -70,13 +70,14 @@ function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
         kraftwagen_context_load_config_file($file, KRAFTWAGEN_CONTEXT_ROOT);
       }
     }
+    
+    // By default needs to be environment aware.
+    kraftwagen_context_load_environment();
   }
   elseif ($required) {
     drush_set_error('kraftwagen', dt('Could not find a Kraftwagen root'));
   }
 
-  // By default needs to be environment aware.
-  kraftwagen_context_load_environment();
 }
 
 /**
