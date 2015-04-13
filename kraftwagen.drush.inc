@@ -92,7 +92,7 @@ function kraftwagen_drush_command() {
     'aliases' => array('kw-s'),
     'options' => array(
       'build-dir' => dt('The name of the symlink/folder that will be generated with the latest build.'),
-      'environment' => dt("Define your environment, defaults to 'production'."),
+      'env' => dt("Define your environment, defaults to 'production'."),
     ),
   );
 

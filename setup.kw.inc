@@ -11,7 +11,7 @@
  */
 function drush_kraftwagen_kw_setup() {
   //Give a chance to determine environment using drush argument
-  $default_environment = drush_get_option(array('environment'));
+  $default_environment = drush_get_option(array('env'));
 
   if(!$default_environment) {
     $default_environment = kraftwagen_context_get_option('environment-default');
