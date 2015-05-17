@@ -43,12 +43,12 @@ function drush_kraftwagen_kw_activate_build($build) {
   }
 
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
-  
+
   kraftwagen_symlink($build, $path_build);
 
   // Better local development workflow.
   $env = kraftwagen_context_get_option('environment');
-  if ($env == 'local') {
+  if ($env == 'development') {
     $dir_src = kraftwagen_context_get_option('src-dir');
     $dir_src = $root . DIRECTORY_SEPARATOR . $dir_src;
 

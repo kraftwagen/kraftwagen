@@ -24,7 +24,7 @@ function make_download_kraftwagen_directory() {
   $env = kraftwagen_context_get_option('environment');
 
   // Better local development workflow.
-  if ($env == 'local') {
+  if ($env == 'development') {
     rmdir($download_location);
 
     $old_cwd = getcwd();
