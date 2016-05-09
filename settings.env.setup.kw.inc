@@ -17,8 +17,8 @@ function drush_kw_setup_env_settings_init() {
  *
  * @param string $build
  *   The location of the build where the symlink should created in.
- * @param string $name
- *   The name of the symlink to be created.
+ * @param string $env
+ *   The name of environment
  */
 function drush_kraftwagen_kw_setup_env_settings($build, $env = NULL) {
   // Find out where the Kraftwagen root is.
