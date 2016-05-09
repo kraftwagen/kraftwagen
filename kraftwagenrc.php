@@ -30,12 +30,22 @@ $options += array(
   // Default environment is production for safety reasons.
   'environment-default' => 'production',
   'environment-file' => 'environment',
+  //environment settings file format
+  'environment-settings-file' => 'settings.env.php',
 
   'settings-file' => 'settings.php',
   'settings-local-file' => 'settings.local.php',
   'files-dir' => 'files',
   'drupal-config-dir' => 'default',
   'use-relative-symlinks' => TRUE,
+);
+
+
+//environment settings files
+$options['environment-settings-files'] = array(
+  'development' => 'settings.development.php',
+  'staging' => 'settings.staging.php',
+  'production' => 'settings.production.php'
 );
 
 // Default way to find the Kraftwagen root directory is checking for the
@@ -51,8 +61,9 @@ $options['root-checks'] = array(
 
 $options['build-commands'] = array(
   'kw-generate-makefile' => array('*make_file_location*'),
-  'make' => array('*make_file_location*', '*target_dir*','--concurrency=1'),
+  'make' => array('*make_file_location*', '*target_dir*', '--concurrency=1'),
   'kw-setup-symlinks' => array('*target_dir*'),
+  'kw-setup-environment-settings' => array('*target_dir*'),
   'kw-activate-build' => array('*target_dir*'),
 );
 
@@ -77,4 +88,5 @@ $options['setup-symlinks-commands'] = array(
   array('kw-setup-symlink' => array('*build*', $options['settings-file'])),
   array('kw-setup-symlink' => array('*build*', $options['settings-local-file'])),
   array('kw-setup-symlink' => array('*build*', $options['files-dir'])),
+  array('kw-setup-env-settings' => array('*build*', $options['environment-settings-files'])),
 );

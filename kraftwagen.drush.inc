@@ -131,6 +131,16 @@ function kraftwagen_drush_command() {
     'required-arguments' => 2,
   );
 
+  $items['kw-setup-env-settings'] = array(
+    'hidden' => TRUE,
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Creates or recreates symlinks for the environment specific settings files and the uploaded files directory into the specified Kraftwagen build.'),
+    'arguments' => array(
+      'build' => dt('The build to create the symlinks in. Defaults to the currently active build.'),
+      'env' => dt('Environment name')
+    ),
+  );
+
   $items['kw-import-translations'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
     'description' => dt('Import all .po files in the project for enabled components.'),

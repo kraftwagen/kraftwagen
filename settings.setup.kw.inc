@@ -34,7 +34,7 @@ function drush_kraftwagen_kw_setup_settings() {
   foreach ($file_keys as $key) {
     if ($key == 'kraftwagenrc-file') {
       $name = KRAFTWAGEN_RC;
-    } 
+    }
     elseif (!($name = kraftwagen_context_get_option($key))) {
       return drush_set_error(dt('No !key name set.', array('!key' => str_replace('-', ' ', $key))));
     }
@@ -46,6 +46,12 @@ function drush_kraftwagen_kw_setup_settings() {
   }
   if (!($dir_src_cnf = kraftwagen_context_get_option('src-cnf-dir'))) {
     return drush_set_error(dt('No src cnf dir name set.'));
+  }
+
+  if($environment_settings_files = kraftwagen_context_get_option('environment-settings-files')) {
+    foreach($environment_settings_files as $key => $file_name) {
+      $file_names['environment-settings-file-' . $key] = $file_name;
+    }
   }
 
   foreach ($file_names as $key => $file_name) {
