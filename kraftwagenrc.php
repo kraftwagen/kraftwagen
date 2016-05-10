@@ -63,7 +63,6 @@ $options['build-commands'] = array(
   'kw-generate-makefile' => array('*make_file_location*'),
   'make' => array('*make_file_location*', '*target_dir*', '--concurrency=1'),
   'kw-setup-symlinks' => array('*target_dir*'),
-  'kw-setup-environment-settings' => array('*target_dir*'),
   'kw-activate-build' => array('*target_dir*'),
 );
 

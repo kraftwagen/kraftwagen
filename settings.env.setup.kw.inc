@@ -79,7 +79,9 @@ function drush_kraftwagen_kw_setup_env_settings($build, $env = NULL) {
   }
 
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
-  unlink($build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $env_settings_file);
+  if (file_exists($build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $env_settings_file)) {
+    unlink($build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $env_settings_file);
+  }
   kraftwagen_symlink($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name, $build . DIRECTORY_SEPARATOR . 'sites' . DIRECTORY_SEPARATOR . $dir_drupal_config . DIRECTORY_SEPARATOR . $env_settings_file);
 
   drush_log(dt('Symlinked envoirment settings file \'!name\' to build.', array('!name' => $name . (is_dir($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $name) ? '/' : ''))), 'success');
