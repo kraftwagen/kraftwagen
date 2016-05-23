@@ -1,0 +1,20 @@
+{
+    "name": "kraftwagen/kraftwagen",
+    "description": "Drush commands to manage a install profile based Drupal development workflow",
+    "keywords": [
+        "kraftwagen",
+        "drush"
+    ],
+    "homepage": "https://github.com/kraftwagen/kraftwagen",
+    "license": "GPL-2.0+",
+    "support": {
+        "issues": "https://github.com/kraftwagen/kraftwagen",
+        "source": "https://github.com/kraftwagen/kraftwagen"
+    },
+    "require": {
+        "drush/drush": "7.*"
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
+}
