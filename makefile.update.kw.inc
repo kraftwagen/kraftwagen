@@ -16,12 +16,9 @@ function drush_kraftwagen_kw_update_makefile($makefile) {
   require_once dirname(__FILE__) . '/includes/kraftwagen.info_files.inc';
 
   $info = kraftwagen_read_info_file($makefile);
-  if (version_compare(drush_core_version(), '7', '>=')) {
-    $update_info = kraftwagen_update_projects78($info);
-  }
-  else {
-    $update_info = kraftwagen_update_projects($info);
-  }
+  $update_info = (version_compare(drush_core_version(), '7', '>='))
+    ? kraftwagen_update_projects78($info) : kraftwagen_update_projects($info);
+
   if (empty($update_info)) {
     drush_log(dt('No updates required.'), 'success');
     return;
