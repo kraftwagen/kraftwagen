@@ -63,6 +63,13 @@ function kraftwagen_drush_command() {
     ),
     'required-arguments' => 1,
     'aliases' => array('kw-um'),
+    'engines' => array(
+      'release_info',
+    ),
+    'options' => array(
+      'security-only'  => 'Only update modules that have security updates available.',
+      'make-update-default-url' => 'The default location to load the XML update information from.',
+    ),
   );
 
   $items['kw-update'] = array(
