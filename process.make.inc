@@ -20,7 +20,23 @@ function make_download_kraftwagen_directory() {
   $download = array_shift($args);
   $download_location = array_shift($args);
 
-  $result = drush_copy_dir($download['url'], $download_location, FILE_EXISTS_OVERWRITE);
-  drush_log(dt('@project copied from @url.', array('@project' => $name, '@url' => $download['url'])), 'ok');
+  kraftwagen_context_init_kraftwagen_root();
+  $env = kraftwagen_context_get_option('environment');
+
+  // Better local development workflow.
+  if ($env == 'development') {
+    rmdir($download_location);
+
+    $old_cwd = getcwd();
+    chdir(dirname($download_location));
+    $result = symlink($download['url'], $name);
+    chdir($old_cwd);
+
+    drush_log(dt('@project linked from @url.', array('@project' => $name, '@url' => $download['url'])), 'ok');
+  }
+  else {
+    $result = drush_copy_dir($download['url'], $download_location, FILE_EXISTS_OVERWRITE);
+    drush_log(dt('@project copied from @url.', array('@project' => $name, '@url' => $download['url'])), 'ok');
+  }
   return $result ? $download_location : FALSE;
 }

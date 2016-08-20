@@ -97,6 +97,10 @@ function kraftwagen_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Sets up the environment, settings files and uploaded files directory for a Kraftwagen project.'),
     'aliases' => array('kw-s'),
+    'options' => array(
+      'build-dir' => dt('The name of the symlink/folder that will be generated with the latest build.'),
+      'env' => dt("Define your environment, defaults to 'production'."),
+    ),
   );
 
   $items['kw-setup-env'] = array(
@@ -133,7 +137,7 @@ function kraftwagen_drush_command() {
     'aliases' => array('kw-bs'),
     'arguments' => array(
       'build' => dt('The build to create the symlink in.'),
-      'name' => dt('The name of the file or dir to symlink.')
+      'name' => dt('The name of the file or dir to symlink.'),
     ),
     'required-arguments' => 2,
   );

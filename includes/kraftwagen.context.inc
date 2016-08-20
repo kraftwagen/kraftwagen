@@ -25,6 +25,25 @@ define('KRAFTWAGEN_CONTEXT_ROOT', 'user');
 define('KRAFTWAGEN_CONTEXT_RUNTIME', 'process');
 
 /**
+ * Function to retrieve the actual environment from the environment file.
+ */
+function kraftwagen_context_load_environment() {
+  // Find out where the Kraftwagen root is.
+  $root = kraftwagen_context_get_option('root-path');
+
+  // Determine config directory.
+  $dir_cnf = kraftwagen_context_get_option('cnf-dir');
+  $file_environment = kraftwagen_context_get_option('environment-file');
+
+  if ($dir_cnf && $file_environment && file_exists($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment)) {
+
+    $environment = trim(file_get_contents($root . DIRECTORY_SEPARATOR . $dir_cnf . DIRECTORY_SEPARATOR . $file_environment));
+    kraftwagen_context_set_option('environment', $environment);
+  }
+
+}
+
+/**
  * Load the default kraftwagenrc.php file.
  */
 function kraftwagen_context_load_default_config() {
@@ -51,10 +70,14 @@ function kraftwagen_context_init_kraftwagen_root($required = TRUE) {
         kraftwagen_context_load_config_file($file, KRAFTWAGEN_CONTEXT_ROOT);
       }
     }
+    
+    // By default needs to be environment aware.
+    kraftwagen_context_load_environment();
   }
   elseif ($required) {
     drush_set_error('kraftwagen', dt('Could not find a Kraftwagen root'));
   }
+
 }
 
 /**
