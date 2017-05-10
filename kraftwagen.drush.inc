@@ -45,7 +45,7 @@ function kraftwagen_drush_command() {
   );
 
   $items['kw-activate-build'] = array(
-    'hidden' => TRUE,
+    'hidden' => FALSE,
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Link a symlink to the specified build'),
     'arguments' => array(
