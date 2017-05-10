@@ -28,6 +28,18 @@ function kraftwagen_drush_command() {
     ),
   );
 
+  $items['kw-new-module'] = array(
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Create a new module. This will create an new module directory from a Git skeleton repository.'),
+    'arguments' => array(
+      'directory' => dt('The directory to create the module in. Defaults to the current directory'),
+    ),
+    'aliases' => array('kw-nm'),
+    'options' => array(
+      'force' => dt('Forces execution of this command, even if the specified source dir already exists.'),
+    ),
+  );
+
   $items['kw-build'] = array(
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Create a build from the source'),
