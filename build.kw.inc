@@ -24,6 +24,9 @@ function drush_kraftwagen_kw_build() {
   require_once dirname(__FILE__) . '/includes/kraftwagen.fileutils.inc';
   $make_file_location = drush_tempnam('kw');
 
+  // Check for the working-copy option.
+  $working_copy = drush_get_option(array('working-copy')) ? '1' : '0';
+
   // Gind out where to create the new build.
   if (!($target_dir = kraftwagen_build_determine_target($root))) {
     return drush_set_error(dt('Could not determine a build target.'));
@@ -32,6 +35,7 @@ function drush_kraftwagen_kw_build() {
   kraftwagen_commands_sequence_run('build-commands', array(
     '*make_file_location*' => $make_file_location,
     '*target_dir*' => $target_dir,
+    '*working_copy*' => $working_copy,
   ));
 }
 
