@@ -32,6 +32,9 @@ function kraftwagen_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Create a build from the source'),
     'aliases' => array('kw-b'),
+    'options' => array(
+      'working-copy' => dt('Creates a working copy for the projects.'),
+    )
   );
 
   $items['kw-generate-makefile'] = array(
