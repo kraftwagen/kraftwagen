@@ -41,7 +41,8 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
 
   // If we can't gather data about the install profile, we can't do anything.
   if (!isset($files[$profile])) {
-    return drush_set_error(dt('Could not find dependencies for profile !profile.', array('!profile' => $profile)));
+    drush_set_error(dt('Could not find dependencies for profile !profile.', array('!profile' => $profile)));
+    return false;
   }
 
   // To find the required modules we need to clear the required flag on the
@@ -60,7 +61,8 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
         foreach (array_keys($info->requires) as $dependency) {
           if (!isset($required[$dependency])) {
             if (!isset($files[$dependency])) {
-              return drush_set_error(dt('Dependency !dependency of required module !module does not exist.', array('!module' => $name, '!dependency' => $dependency)));
+              drush_set_error(dt('Dependency !dependency of required module !module does not exist.', array('!module' => $name, '!dependency' => $dependency)));
+              return false;
             }
             $required[$dependency] = $files[$dependency]->sort;
           }
@@ -75,7 +77,8 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   foreach (array_keys($files[$profile]->requires) as $dependency) {
     if (!isset($required[$dependency])) {
       if (!isset($files[$dependency])) {
-        return drush_set_error(dt('Dependency !dependency of the install profile !profile does not exist.', array('!dependency' => $dependency, '!profile' => $profile)));
+        drush_set_error(dt('Dependency !dependency of the install profile !profile does not exist.', array('!dependency' => $dependency, '!profile' => $profile)));
+        return false;
       }
 
       $dependencies[$dependency] = $files[$dependency]->sort;
@@ -87,7 +90,8 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   $expected = array_merge(array_keys($required), array_keys($dependencies));
   $result = module_enable($expected);
   if (!$result) {
-    return drush_set_error(dt('An unexpected error occured while trying to enable modules !modules', array('!modules', implode(', ', $expected))));
+    drush_set_error(dt('An unexpected error occured while trying to enable modules !modules', array('!modules', implode(', ', $expected))));
+    return false;
   }
 
   // Check for enabled modules that are not expected to be enabled.
@@ -126,7 +130,8 @@ function drush_kraftwagen_kw_apply_module_dependencies($environment = 'productio
   if ($orphan_installs) {
     $result = drupal_uninstall_modules($orphan_installs, FALSE);
     if (!$result) {
-      return drush_set_error(dt('An unexpected error occured while trying to uninstall modules !modules', array('!modules', implode(', ', $orphan_installs))));
+      drush_set_error(dt('An unexpected error occured while trying to uninstall modules !modules', array('!modules', implode(', ', $orphan_installs))));
+      return false;
     }
   }
 
